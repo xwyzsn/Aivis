@@ -1,0 +1,11 @@
+.idea
+/venv
+/front-end/node_modules
+/node_modules
+/front-end-v2/frontend-v2/node_modules
+/src/al1/__pycache__/
+/front-end
+.vscode
+/backend/app/__pycache__/
+/backend/app/backend/
+/backend/app/*/__pycache__/

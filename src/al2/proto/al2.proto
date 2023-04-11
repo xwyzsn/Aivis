@@ -1,0 +1,95 @@
+syntax = "proto3";
+package al2;
+
+option go_package = "./proto;al2";
+
+service TrainError{
+  rpc GetError(TrainErrorRequest) returns (TrainErrorResponse) {}
+  rpc PreTrain(PreTrainRequest) returns (PreTrainResponse){}
+  rpc GetConfig(ConfigRequest) returns (ConfigResponse){}
+}
+message TrainDict{
+  int32 epoch =1;
+  float train_loss = 2;
+  float valid_loss = 3;
+  float test_loss = 4;
+}
+message TrainErrorRequest{
+  string service = 1;
+  string id = 2;
+}
+message TrainErrorResponse {
+  repeated TrainDict train_dict = 1;
+}
+
+message PreTrainRequest{
+  string mode = 1;
+  string dataset = 2;
+  int32 batch = 3;
+  string attnprob = 4;
+  string freq = 5;
+  int32 seq_len = 6;
+  int32 pred_len = 7;
+  string path = 8;
+}
+message PreTrainResponse{
+  string tid = 1;
+  int32 statu = 2;
+}
+
+message ConfigRequest{
+  string service = 1;
+}
+
+
+
+message ConfigResponse {
+
+  string model = 1;
+  string data = 2;
+  string root_path = 3;
+  string data_path = 4;
+  string features = 5;
+  string target = 6;
+  string freq = 7;
+  double seq_len = 8;
+  double label_len = 9;
+  double pred_len = 10;
+  double enc_in = 11;
+  double dec_in = 12;
+  double c_out = 13;
+  double d_model = 14;
+  double n_heads = 15;
+  double e_layers = 16;
+  double d_layers = 17;
+  repeated int32 s_layers = 18;
+  double d_ff = 19;
+  double factor = 20;
+  double padding = 21;
+  bool distil = 22;
+  double dropout = 23;
+  string attn = 24;
+  string embed = 25;
+  string activation = 26;
+  bool output_attention = 27;
+  bool do_predict = 28;
+  bool mix = 29;
+  string cols = 30;
+  double num_workers = 31;
+  double itr = 32;
+  double train_epochs = 33;
+  double batch_size = 34;
+  double patience = 35;
+  double learning_rate = 36;
+  string des = 37;
+  string loss = 38;
+  string lradj = 39;
+  bool use_amp = 40;
+  bool inverse = 41;
+  bool use_gpu = 42;
+  bool use_multi_gpu = 43;
+  string devices = 44;
+  string detail_freq = 45;
+}
+
+

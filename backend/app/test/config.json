@@ -1,0 +1,10 @@
+{
+    "host": "113.31.110.212",
+    "port": 5432,
+    "user": "zzh",
+    "password": "zzh0117.",
+    "type": "psql",
+    "database": "al",
+    "table":"datasource",
+    "query": "select * from datasource"
+}

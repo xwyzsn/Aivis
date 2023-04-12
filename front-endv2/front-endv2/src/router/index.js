@@ -31,16 +31,22 @@ const router = createRouter({
           path: 'chart', component: () => import('../views/ChartView/NewChartView.vue'), name: 'newChartView',
           redirect: '/sys/chart/choose',
           children: [
-            { path: 'choose',component:() => import('../views/ChartView/ChoosePage.vue'), name: 'chooseView' },
-            {path:'allchart',component:() => import('../views/ChartView/AllChartView.vue'), name: 'allChartView' },
+            { path: 'choose', component: () => import('../views/ChartView/ChoosePage.vue'), name: 'chooseView' },
+            { path: 'allchart', component: () => import('../views/ChartView/AllChartView.vue'), name: 'allChartView' },
           ]
         },
         {
-          path:'datasource',component:() => import('../views/Layout/DatasourceLayout.vue'), name: 'datasourceLayout',
+          path: 'datasource', component: () => import('../views/Layout/DatasourceLayout.vue'), name: 'datasourceLayout',
         },
-        { path:'sqllab',component:()=> import('../views/SqlLab/SqlLab.vue'),name:'sqlLab'}
+        { path: 'sqllab', component: () => import('../views/SqlLab/SqlLab.vue'), name: 'sqlLab' },
+        { path: 'mapping', component: () => import('../views/ChartView/ChartMapping.vue'), name: 'chartmapping' },
       ]
-    }
+    },
+    // {
+    //   path:'/chart/:id',
+    //   name:'detailchart',
+    //   component:() => import('../views/ChartView/DetailChartView.vue')
+    // }
   ]
 })
 

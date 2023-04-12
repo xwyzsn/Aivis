@@ -9,3 +9,7 @@
 /backend/app/__pycache__/
 /backend/app/backend/
 /backend/app/*/__pycache__/
+/app/__pycache__/
+/app/*/__pycache__/
+/app/*/*/__pycache__/
+/app/backend/

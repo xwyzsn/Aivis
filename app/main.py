@@ -1,6 +1,6 @@
 from fastapi import FastAPI,Depends
 from fastapi.middleware.cors import CORSMiddleware
-from router import dashboard, datasource,datasrc_meta_controlloer
+from router import dashboard, datasource,datasrc_meta_controlloer,dataset_controller
 from curd.service import curd
 from curd.sqlconfig import SessionLocal, engine
 from curd import model,schemas
@@ -17,6 +17,7 @@ app.add_middleware(
 app.include_router(dashboard.router)
 app.include_router(datasource.router)
 app.include_router(datasrc_meta_controlloer.router)
+app.include_router(dataset_controller.router)
 
 
 def get_db():

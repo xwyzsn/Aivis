@@ -19,10 +19,14 @@ class Dashboard(Base):
 class DataSet(Base):
     __tablename__ = "dataset"
     datasetid = Column(Integer, primary_key=True, index=True)
-    datasource_id = Column(Integer, ForeignKey("datasource.datasourceid"))
-    database = Column(String)
-    table = Column(String)
     query = Column(String)
     example_row = Column(JSON)
-    
+    config = Column(JSON)
+    dataset_name = Column(String)
+
+class ChartTemplate(Base):
+    __tablename__ = "chart_template"
+    cid = Column(Integer, primary_key=True, index=True)
+    chart_name = Column(String)
+    config = Column(JSON)
 

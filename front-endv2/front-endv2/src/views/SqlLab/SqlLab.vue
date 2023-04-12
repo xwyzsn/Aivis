@@ -28,7 +28,7 @@
         </div>
         <div class="flex flex-row-reverse m-5">
             <el-button type="primary" class="mr-5 pr-5" @click="runQuery"> Run Query</el-button>
-            <el-button class="mr-5 pr-5"> Save Dataset </el-button>
+            <el-button class="mr-5 pr-5" @click="saveClick"> Save Dataset </el-button>
         </div>
         <div>
             <MyHeader content="查询结果" />
@@ -39,15 +39,21 @@
                 </el-table>
             </div>
         </div>
+        <el-dialog v-model="showModal">
+            <div>
+                输入数据集名称
+            </div>
+            <el-input placeholder="输入数据集名称" v-model="datasetName"></el-input>
+        </el-dialog>
     </div>
 </template>
  
 <script setup>
 import Editor from '../../components/sqllab/Editor.vue';
 import { useRoute } from 'vue-router';
-import { getDatasrcMeta, execQuery } from "../../api/sqllab/utils"
+import { getDatasrcMeta, execQuery, saveDataset } from "../../api/sqllab/utils"
 import { ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, tabNavEmits } from 'element-plus'
 import MyHeader from '../../components/trivial/MyHeader.vue';
 let content = ref('')
 let tables = ref([])
@@ -55,6 +61,8 @@ let activateTable = ref(null)
 let tableInfo = ref(null)
 let queryRes = ref([])
 let tableCol = ref([])
+let showModal = ref(false)
+let datasetName = ref('')
 const { query } = useRoute()
 let fetchDataSrcMeta = () => {
     getDatasrcMeta(query).then(res => {
@@ -80,6 +88,31 @@ let runQuery = () => {
     }).catch(err => {
         ElMessage.error(err)
 
+    })
+}
+let saveClick = () => {
+    if (content.value === '') {
+        ElMessage.error('请先输入查询语句')
+        return
+    }
+    if (queryRes.value.length === 0) {
+        ElMessage.error('请先执行查询语句 or 数据集为空')
+        return
+    }
+    let dataset = {
+        query: content.value,
+        example_row: queryRes.value[0],
+        config: query,
+        dataset_name: datasetName.value
+    }
+    saveDataset(dataset).then(res => {
+        if (res.status !== 200) {
+            ElMessage.error(res.data.msg)
+            return
+        }
+        ElMessage.success('保存成功')
+    }).catch(err => {
+        ElMessage.error(err)
     })
 }
 fetchDataSrcMeta()

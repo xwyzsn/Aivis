@@ -22,11 +22,31 @@ class Dashboard(BaseModel):
 
     class Config:
         orm_mode = True
-        
+
+class Dataset(BaseModel):
+    datasetid: int
+    query: str
+    example_row: Union[Dict,None]
+    config: Union[Dict,None]
+    dataset_name: str
+
+    class Config:
+        orm_mode = True
+
+class ChartTemplate(BaseModel):
+    cid: int
+    chart_name: str
+    config: dict
+
+    class Config:
+        orm_mode = True
+
 class Bootstrap(BaseModel):
     datasource: List[DataSource]
     chart: List[Chart]
     dashboard: List[Dashboard]
+    dataset: List[Dataset]
+    chart_template: List[ChartTemplate]
 
     class Config:
         orm_mode = True
@@ -45,10 +65,10 @@ class DataSourceConfig:
 
 
 class DataSetConfig:
-    def __init__(self,datasource_id:int,database:str,table:str,
+    def __init__(self,config:Union[dict,None],
+                 dataset_name:str,
                  query:str,example_row: Union [Dict , None]):
-        self.datasource_id = datasource_id
-        self.database = database
-        self.table = table
+        self.config = config
         self.query = query
         self.example_row = example_row
+        self.dataset_name = dataset_name

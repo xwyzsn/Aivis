@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends,HTTPException
 import json
-from curd.service import datasrc_meta
+from ..curd.service import datasrc_meta
 
 router = APIRouter(prefix="/datasrc", tags=["datasrc"])
 class DataSourceConfig:

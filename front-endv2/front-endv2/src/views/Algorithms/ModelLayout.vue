@@ -67,6 +67,7 @@
  
 <script setup>
 import { ref, watch } from 'vue'
+import {axios} from '../../api/axios'
 import { useBootstrapStore } from '../../stores/counter';
 import ConfigList from '../../components/algorithm/ConfigList.vue'
 import DecChart from '../../components/charts/DecChart.vue';
@@ -95,11 +96,22 @@ watch(selectedModel, (val, oldVal) => {
 let confirm = () => {
     let formData = new FormData();
     formData.append('model_name', selectedModel.value)
-    formData.append('dataset', datasets.value.filter(item => item.datasetid == selectedDataset.value)[0])
+    formData.append('dataset', datasets.value.filter(item => item.datasetid === selectedDataset.value)[0])
     formData.append('mapping', mapping.value)
     formData.append('config', models.value.filter(model => model.model_name === selectedModel.value)[0].model_config)
-    let param = { 'model_name': selectedModel.value, 'dataset': datasets.value.filter(item => item.datasetid == selectedDataset.value)[0], 'mapping': mapping.value, 'config': models.value.filter(model => model.model_name === selectedModel.value)[0].model_config }
+    let param = { 'model_name': selectedModel.value, 'dataset': datasets.value.filter(item => item.datasetid === selectedDataset.value)[0],
+        'mapping': mapping.value, 'config': models.value.filter(model => model.model_name === selectedModel.value)[0].model_config }
     console.log(param)
+    axios({
+        url:"http://localhost:8080/train",
+        method:"post",
+        data:param
+    }).then((res)=>{
+        console.log(res)
+    }).catch(err=>{
+        console.log(err)
+    })
+
 
 }
 

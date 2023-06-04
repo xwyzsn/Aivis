@@ -21,11 +21,7 @@ const router = createRouter({
         {
           path: 'algorithms',
           name: 'algorithms',
-          component: () => import('../views/Layout/AlLayout.vue'),
-          redirect: '/sys/algorithms/triformer',
-          children: [
-            { path: 'triformer', component: () => import('../views/Algorithms/Triformer.vue'), name: 'triformer' },
-          ]
+          component: () => import('../views/Algorithms/ModelLayout.vue')
         },
         {
           path: 'chart', component: () => import('../views/ChartView/NewChartView.vue'), name: 'newChartView',
@@ -40,6 +36,7 @@ const router = createRouter({
         },
         { path: 'sqllab', component: () => import('../views/SqlLab/SqlLab.vue'), name: 'sqlLab' },
         { path: 'mapping', component: () => import('../views/ChartView/ChartMapping.vue'), name: 'chartmapping' },
+        { path: 'dashboard', component: () => import('../views/DashboardView/CreateDashbord.vue'), name: 'dashboard' },
       ]
     },
     // {

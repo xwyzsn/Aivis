@@ -30,3 +30,9 @@ class ChartTemplate(Base):
     chart_name = Column(String)
     config = Column(JSON)
 
+class Models(Base):
+    __tablename__ = "model"
+    id = Column(Integer,primary_key = True,index=True)
+    model_name = Column(String)
+    model_config = Column(JSON)
+

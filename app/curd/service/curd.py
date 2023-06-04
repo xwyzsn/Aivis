@@ -14,7 +14,8 @@ def bootstrap(db: Session):
     dashboard = db.query(model.Dashboard).all()
     dataset = db.query(model.DataSet).all()
     chart_template = db.query(model.ChartTemplate).all()
-    return {"datasource": datasource, "chart": chart, "dashboard": dashboard,"dataset":dataset,"chart_template":chart_template}
+    models = db.query(model.Models).all()
+    return {"datasource": datasource, "chart": chart, "dashboard": dashboard,"dataset":dataset,"chart_template":chart_template,"models":models}
 
 
 

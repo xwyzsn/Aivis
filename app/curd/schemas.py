@@ -41,12 +41,21 @@ class ChartTemplate(BaseModel):
     class Config:
         orm_mode = True
 
+class Model(BaseModel):
+    id: int
+    model_name: str
+    model_config: dict
+    
+    class Config:
+        orm_mode = True
+
 class Bootstrap(BaseModel):
     datasource: List[DataSource]
     chart: List[Chart]
     dashboard: List[Dashboard]
     dataset: List[Dataset]
     chart_template: List[ChartTemplate]
+    models: List[Model]
 
     class Config:
         orm_mode = True

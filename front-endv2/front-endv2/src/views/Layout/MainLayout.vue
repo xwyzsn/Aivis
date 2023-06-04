@@ -2,31 +2,27 @@
     <div class="w-full h-full">
         <el-container class="w-full h-full">
             <el-aside width="200px">
-                <el-menu active-text-color="#ffd04b" background-color="#545c64" class="h-full" default-active="1-1"
-                    router
-                    text-color="#fff" >
-                    <el-sub-menu index="1">
-                        <template #title>
-                            <el-icon>
-                                <location />
-                            </el-icon>
-                            <span>算法模块</span>
-                        </template>
-                        <el-menu-item index="1-1" route="/sys/algorithms/triformer">Triformer</el-menu-item>
-                        <!-- <el-menu-item index="1-2">item two</el-menu-item> -->
-                        <!-- <el-menu-item index="1-3">item three</el-menu-item> -->
-                    </el-sub-menu>
-                    <el-menu-item :route="{name:'datasourceLayout'}" index="2">
-                        <el-icon><document/></el-icon>
+                <el-menu active-text-color="#ffd04b" background-color="#545c64" class="h-full" default-active="1-1" router
+                    text-color="#fff">
+                    <el-menu-item :route="{ name: 'algorithms' }">
+                        <el-icon>
+                            <location />
+                        </el-icon>
+                        <span>算法模块</span>
+                    </el-menu-item>
+                    <el-menu-item :route="{ name: 'datasourceLayout' }" index="2">
+                        <el-icon>
+                            <document />
+                        </el-icon>
                         <span>数据源模块</span>
                     </el-menu-item>
-                    <el-menu-item :route="{name:'newChartView'}" index="3" >
+                    <el-menu-item :route="{ name: 'newChartView' }" index="3">
                         <el-icon>
                             <document />
                         </el-icon>
                         <span>图表模块</span>
                     </el-menu-item>
-                    <el-menu-item index="4">
+                    <el-menu-item index="4" :route="{ name: 'dashboard' }">
                         <el-icon>
                             <setting />
                         </el-icon>

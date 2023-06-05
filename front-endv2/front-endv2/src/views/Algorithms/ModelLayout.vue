@@ -89,7 +89,7 @@ watch(selectedModel, (val, oldVal) => {
     mapping.value = model.model_config.input
     console.log(mapping.value)
     example.value = model.model_config.example
-    console.log(example.value)
+    console.log("example===",example.value)
 })
 
 
@@ -103,7 +103,7 @@ let confirm = () => {
         'mapping': mapping.value, 'config': models.value.filter(model => model.model_name === selectedModel.value)[0].model_config }
     console.log(param)
     axios({
-        url:"http://localhost:8080/train",
+        url:"http://localhost:5678/train",
         method:"post",
         data:param
     }).then((res)=>{

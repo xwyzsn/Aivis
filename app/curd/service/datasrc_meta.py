@@ -4,6 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import inspect
 
 from ..schemas import DataSourceConfig
+from sqlalchemy.sql import text
+
 
 SQLALCHEMY_DATABASE_URL = "postgresql://zzh:zzh0117.@113.31.110.212/al"
 PSQL = "postgresql://{user}:{password}@{host}:{port}/{database}"
@@ -36,9 +38,9 @@ def exec_sql(datasrc:DataSourceConfig):
     engine = create_engine(SQL) 
     sql = datasrc.query
     with engine.connect() as conn:
-        result = conn.execute(sql)
+        result = conn.execute(text(sql))
         res = result.fetchall()
-        print(res)
+        res = [tuple(i) for i in res]
         return res 
 
 

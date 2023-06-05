@@ -4,7 +4,7 @@
             <el-aside width="200px">
                 <el-menu active-text-color="#ffd04b" background-color="#545c64" class="h-full" default-active="1-1" router
                     text-color="#fff">
-                    <el-menu-item :route="{ name: 'algorithms' }">
+                    <el-menu-item :route="{ name: 'algorithms' }" index="1">
                         <el-icon>
                             <location />
                         </el-icon>

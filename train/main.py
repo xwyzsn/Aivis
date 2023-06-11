@@ -1,3 +1,5 @@
+import uuid
+
 import uvicorn
 from fastapi import FastAPI
 from typing import Dict,List
@@ -20,7 +22,7 @@ app.add_middleware(
 )
 
 class train_request(BaseModel):
-
+    model_name:str
     config: Dict | None
     dataset: Dict | None
     mapping: List | None
@@ -31,35 +33,39 @@ def train_model(request: train_request):
     dataset = request.dataset
     print(dataset,type(dataset))
     data_src = dataset['config']
-    # database_connection = Datasrc(host=data_src['host'], port=int(data_src['port']),
-    #                               user=data_src['user'], password=data_src['password'],
-    #                               database=data_src['database'],
-    #                               table_name=dataset['dataset_name'])
-    # columns = COLS[request.config['algorithm']]
-    # database_connection.create_table(columns)
-    # script = MODELS[request.config['algorithm']]
-    #Thread(target=exec_cmd, args=(script,), daemon=True).start()
-
     msg = {"code": 200, "data": {"host": data_src['host'], "port": data_src['port'],
                                  "user": data_src['user'], "password": data_src['password'],
-                                 "database": data_src['database'], "table_name": dataset['dataset_name']}}
-    datasets = {
-        "query":"select * from ETTh2",
-        "example_row":None,
-        "config":{
-            "host": data_src['host'],
-            "port": data_src['port'],
-            "user": data_src['user'],
-            "password": data_src['password'],
-            "database": data_src['database'],
-            "query":"select * from ETTh2",
-        },
-    }
+                                 "database": data_src['database'], "table_name": None}}
     try:
-        requests.post("http://localhost:8000/dataset/save", json=msg)
-    except Exception as e :
+        print("=====try segment")
+        table_name = uuid.uuid4().hex
+        database_connection = Datasrc(host=data_src['host'], port=int(data_src['port']),
+                                      user=data_src['user'], password=data_src['password'],
+                                      database=data_src['database'],
+                                      table_name=table_name)
+        columns = COLS[request.model_name]
+        database_connection.create_table(columns)
+        script = MODELS[request.model_name]
+        #Thread(target=exec_cmd, args=(script,), daemon=True).start()
+        msg['data']['table_name'] = table_name
+
+    # datasets = {
+    #     "query":"select * from ETTh2",
+    #     "example_row":None,
+    #     "config":{
+    #         "host": data_src['host'],
+    #         "port": data_src['port'],
+    #         "user": data_src['user'],
+    #         "password": data_src['password'],
+    #         "database": data_src['database'],
+    #         "query":"select * from ETTh2",
+    #     },
+    # }
+        # requests.post("http://localhost:8000/dataset/save", json=msg)
+    except Exception as e:
         print("err",e)
-    msg['data'] = datasets
+        msg['code'] = 500
+        msg['data']= None
     return msg
 
 

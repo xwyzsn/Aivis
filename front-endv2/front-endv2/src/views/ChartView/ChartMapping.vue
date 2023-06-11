@@ -7,10 +7,15 @@
                     <el-option v-for="item in dataCols" :label="item" :value="item">
                     </el-option>
                 </el-select>
-                <el-input v-else="item.type==='input'" :placeholder="item.desc" v-model="item.axis"></el-input>
+                <el-input v-else :placeholder="item.desc" v-model="item.axis"></el-input>
             </div>
-            <div class="flex justify-center">
-                <el-button type="primary" @click="confirm">确认</el-button>
+            <div class="p-4 space-y-3">
+                <div class="w-full">
+                <el-button class="w-full" type="primary" @click="confirm">确认</el-button>
+                </div>
+                <div class="w-full">
+                <el-button class="w-full" type="default" @click="handleSaveChart">保存</el-button>
+                </div>
             </div>
         </div>
         <div class="w-2/3 h-full">
@@ -25,6 +30,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import { useBootstrapStore } from '../../stores/counter';
 import DecChart from '../../components/charts/DecChart.vue';
+import {saveChart} from "@/api/chart/chartApi";
 const bootstrapStore = useBootstrapStore();
 let route = useRoute();
 const { query } = route;
@@ -47,7 +53,24 @@ let confirm = () => {
     }
     mapping.value = tmp
     showChart.value = true
-
+}
+let handleSaveChart = ()=>{
+    console.log(mapping.value)
+    let cfg = {"type":chart.value}
+    chartConfig.value.forEach(item=>{
+        let type = item.type
+        if (type !== 'select') {
+            cfg[item.label] = item.axis
+        }
+    })
+    let payload = {
+        config: cfg,
+        dataset: dataset.value,
+        mapping: mapping.value
+    }
+    saveChart(payload).then(res=>{
+        console.log(res.data)
+    })
 }
 </script> 
  

@@ -11,6 +11,7 @@ class Datasrc:
         self.connection = pymysql.connect(host=self.host,port=self.port,user=self.user,password=self.password,db=self.database)
 
     def create_table(self, cols:List[Tuple[str, str]]):
+        print("============== start create table =============== ")
         with self.connection.cursor() as cursor:
             sql = f"CREATE TABLE IF NOT EXISTS {self.table_name}"
             sql += "("

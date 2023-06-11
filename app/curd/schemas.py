@@ -81,3 +81,9 @@ class DataSetConfig:
         self.query = query
         self.example_row = example_row
         self.dataset_name = dataset_name
+
+class ChartConfig:
+    def __init__(self,config:Union[dict,None],dataset:dict,mapping:dict):
+        self.config = config
+        self.dataset = dataset
+        self.mapping = mapping

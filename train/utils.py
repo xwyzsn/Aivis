@@ -2,12 +2,13 @@ import os
 import uuid
 import subprocess
 MODELS = {
-    "Triformer":"E:\\python310\\python G:\\desktop\\ToTrain\\train\Triformer\\main.py --data ETTh1 --model pa"
+    "triformer":"E:\\python310\\python G:\\desktop\\ToTrain\\train\Triformer\\main.py --data ETTh1 --model pa"
 }
 
 COLS = {
-    "Triformer":[
+    "triformer":[
         ("date","datetime"),
+        ("y","float"),
         ("y_pred","float")
     ]
 }

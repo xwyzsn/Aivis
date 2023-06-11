@@ -10,7 +10,7 @@ class DataSourceConfig:
         self.port = config['port'] 
         self.user = config['user']
         self.password = config['password']
-        self.type = config['type'] 
+        self.type = config.get('type','mysql')
         self.database = config['database']
         self.table = config.get('table',None)
         self.query = config.get('query',None)

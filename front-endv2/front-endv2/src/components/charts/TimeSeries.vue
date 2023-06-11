@@ -1,14 +1,16 @@
 <template>
     <div class="w-full h-full">
-        <div class="w-full h-full" id="proChart" style="width: 400px;height: 300px;" ref="proChart">
+
+        <div class="w-full h-full" :id="props.chart"  >
         </div>
+
     </div>
 </template>
 
 
 <script setup>
 import * as echarts from 'echarts';
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,nextTick } from 'vue'
 let X = ref([])
 let X_predict = ref([])
 let max = ref([])
@@ -43,6 +45,10 @@ const props = defineProps({
     margin: {
         type: Number,
         default: 4
+    },
+    chart:{
+        type:String,
+        default:"proChart"
     }
 })
 let getdataTS = () => {
@@ -55,7 +61,8 @@ let getdataTS = () => {
     });
 };
 let initTimeSeries = () => { // 初始化时序数据预测图
-    let chartInstance = echarts.init(document.getElementById("proChart"), 'infographic')
+
+    let chartInstance = echarts.init(document.getElementById(props.chart), 'infographic')
     const initOption = {
         title: {
             textAlign: 'center',
@@ -206,7 +213,10 @@ let initTimeSeries = () => { // 初始化时序数据预测图
 
 onMounted(() => {
     getdataTS()
-    console.log(props.formData)
+    console.log(props.chart)
+    let dom = document.getElementById(props.chart)
+    console.log(dom)
+
     initTimeSeries()
 })
 

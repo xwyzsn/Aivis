@@ -69,8 +69,10 @@
 import { ref, watch } from 'vue'
 import {axios} from '../../api/axios'
 import { useBootstrapStore } from '../../stores/counter';
+import {ElMessage} from "element-plus";
 import ConfigList from '../../components/algorithm/ConfigList.vue'
 import DecChart from '../../components/charts/DecChart.vue';
+import {saveDataset} from "@/api/sqllab/utils";
 let bootstrap = useBootstrapStore();
 let models = ref(bootstrap.bootstrap.models);
 let datasets = ref(bootstrap.bootstrap.dataset);
@@ -83,13 +85,9 @@ let selectedDataset = ref(null)
 let example = ref(null)
 
 watch(selectedModel, (val, oldVal) => {
-    console.log(val)
     let model = models.value.filter(model => model.model_name === val)[0]
-    console.log(model)
     mapping.value = model.model_config.input
-    console.log(mapping.value)
     example.value = model.model_config.example
-    console.log("example===",example.value)
 })
 
 
@@ -101,17 +99,31 @@ let confirm = () => {
     formData.append('config', models.value.filter(model => model.model_name === selectedModel.value)[0].model_config)
     let param = { 'model_name': selectedModel.value, 'dataset': datasets.value.filter(item => item.datasetid === selectedDataset.value)[0],
         'mapping': mapping.value, 'config': models.value.filter(model => model.model_name === selectedModel.value)[0].model_config }
-    console.log(param)
     axios({
         url:"http://localhost:5678/train",
         method:"post",
         data:param
     }).then((res)=>{
-        console.log(res)
-    }).catch(err=>{
-        console.log(err)
-    })
+        let response = res.data
+        console.log(response)
+        ElMessage.success({
+            message: '操作成功'+',输出数据集uid为'+response.data.table_name,
+            type: 'success'
+        });
+        return response
+    }).then(response=>{
+        let data = response.data
+        let config = {}
+        config['dataset_name'] = selectedModel.value.toString()+'_'+selectedDataset.value.toString()
+        +'_output'
+        data.query = 'select * from '+data['table_name']+ ' limit 10;'
+        config['query'] = 'select * from '+data['table_name']
+        config['example_row'] = null
 
+        config['config'] = data
+
+        saveDataset(config)
+    })
 
 }
 

@@ -37,7 +37,6 @@ def train_model(request: train_request):
                                  "user": data_src['user'], "password": data_src['password'],
                                  "database": data_src['database'], "table_name": None}}
     try:
-        print("=====try segment")
         table_name = uuid.uuid4().hex
         database_connection = Datasrc(host=data_src['host'], port=int(data_src['port']),
                                       user=data_src['user'], password=data_src['password'],

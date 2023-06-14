@@ -1,16 +1,17 @@
 <template>
     <div class="w-full h-full">
         <TimeSeries v-if="data.length > 0" class="w-full h-full" :is="props.ctype === 'TSL'" :form-data="data"
-                    :chart="props.chart" />
+                    :chart="props.chart" :mode="mode" ref="chart" />
     </div>
 </template>
  
 <script setup>
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import TimeSeries from './TimeSeries.vue';
-import { transferMapping } from '../../utils/utils';
-import { execQuery } from '../../api/sqllab/utils';
+import { transferMapping } from '@/utils/utils';
+import { execQuery } from '@/api/sqllab/utils';
 let data = ref([])
+let chart = ref()
 const props = defineProps(
     {
         ctype: {
@@ -31,6 +32,10 @@ const props = defineProps(
         chart:{
             type:String,
             default:"proChart",
+        },
+        mode:{
+            type:String,
+            default:"normal"
         }
     }
 )
@@ -47,8 +52,23 @@ fetchData().then(res => {
 const refreshData = ()=>{
     fetchData().then(res => {
         data.value = res
+    }).then(()=>{
+        chart.value.refreshData()
     })
 }
+const resize = ()=>{
+  if(chart.value){
+    chart.value.resizeWindow();
+  }
+}
+defineExpose({
+    refreshData,
+    resize
+})
+onMounted(()=>{
+
+
+})
 
 </script> 
  

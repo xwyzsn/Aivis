@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends,HTTPException
 import json
 from ..curd.service import datasrc_meta
+from ..curd.service.datasrc_meta import save_database
+from ..curd.schemas import DataSource
 
 router = APIRouter(prefix="/datasrc", tags=["datasrc"])
 class DataSourceConfig:
@@ -32,3 +34,9 @@ def exec_query(datameta:DataSourceConfig = Depends(DataSourceConfig)):
         return meta
     except Exception as e :
         raise HTTPException(status_code=500,detail=str(e)+'something wrong with your sql query')
+
+
+@router.post("/save_datasrc")
+async def save_database_controller(database:DataSource):
+    msg = save_database(database)
+    return msg

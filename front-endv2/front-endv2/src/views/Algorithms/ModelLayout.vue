@@ -17,7 +17,7 @@
                     选择数据集
                 </span>
                 <el-select v-model="selectedDataset">
-                    <el-option v-for="val, idx in datasets" :key="idx + 2324" :label="val.dataset_name"
+                    <el-option v-for="(val, idx) in datasets" :key="idx + 2324" :label="val.dataset_name"
                         :value="val.datasetid">
                         {{ val.dataset_name }}
                     </el-option>
@@ -30,9 +30,10 @@
         <div class="w-full h-full">
             <el-row :gutter="20" class="w-full h-full">
                 <el-col :span="6" class="w-full h-full" v-if="selectedModel">
-                    <ConfigList class="border-solid border-2 border-gray-200 h-full"
+                    <ConfigList @confirmUpdate="handleConfig" class="border-solid border-2 border-gray-200 h-full"
                         v-if="models.filter(model => model.model_name === selectedModel)[0]"
-                        :config="models.filter(model => model.model_name === selectedModel)[0]?.model_config"></ConfigList>
+                        :config="models.filter(model => model.model_name === selectedModel)[0]?.model_config">
+                    </ConfigList>
                 </el-col>
                 <el-col :span="18" class="w-full h-full">
                     <div class="h-1/3" v-if="example">
@@ -40,9 +41,9 @@
                         </dec-chart>
                     </div>
                     <el-table class="m-4 h-1/3" v-if="selectedDataset"
-                        :data="[datasets.filter(item => item.datasetid == selectedDataset)[0]?.example_row]">
+                        :data="[datasets.filter(item => item.datasetid === selectedDataset)[0]?.example_row]">
                         <el-table-column
-                            v-for="(item, idx) in Object.keys(datasets.filter(item => item.datasetid == selectedDataset)[0]?.example_row)"
+                            v-for="(item, idx) in Object.keys(datasets.filter(item => item.datasetid === selectedDataset)[0]?.example_row)"
                             :key="idx" :prop="item" :label="item">
                         </el-table-column>
                     </el-table>
@@ -51,7 +52,7 @@
                         <div v-if="selectedModel && selectedDataset">
                             <el-select v-for="item in mapping" :placeholder="item.desc" v-model="item.axis">
                                 <el-option
-                                    v-for="col in Object.keys(datasets.filter(item => item.datasetid == selectedDataset)[0].example_row)"
+                                    v-for="col in Object.keys(datasets.filter(item => item.datasetid === selectedDataset)[0].example_row)"
                                     :value="col">
                                     {{ col }}
                                 </el-option>
@@ -77,7 +78,7 @@ let bootstrap = useBootstrapStore();
 let models = ref(bootstrap.bootstrap.models);
 let datasets = ref(bootstrap.bootstrap.dataset);
 let mapping = ref([])
-
+let modelConfig = ref({});
 
 let selectedModel = ref(null);
 
@@ -89,7 +90,13 @@ watch(selectedModel, (val, oldVal) => {
     mapping.value = model.model_config.input
     example.value = model.model_config.example
 })
-
+let handleConfig = (arg)=>{
+    console.log(arg)
+    arg.forEach(item=>{
+        modelConfig.value[item[0]] = item[1]
+    })
+    console.log(modelConfig.value)
+}
 
 let confirm = () => {
     let formData = new FormData();
@@ -98,7 +105,7 @@ let confirm = () => {
     formData.append('mapping', mapping.value)
     formData.append('config', models.value.filter(model => model.model_name === selectedModel.value)[0].model_config)
     let param = { 'model_name': selectedModel.value, 'dataset': datasets.value.filter(item => item.datasetid === selectedDataset.value)[0],
-        'mapping': mapping.value, 'config': models.value.filter(model => model.model_name === selectedModel.value)[0].model_config }
+        'mapping': mapping.value, 'config': modelConfig.value}
     axios({
         url:"http://localhost:5678/train",
         method:"post",
@@ -113,13 +120,14 @@ let confirm = () => {
         return response
     }).then(response=>{
         let data = response.data
+        data.dataset_name = response.data.table_name;
         let config = {}
         config['dataset_name'] = selectedModel.value.toString()+'_'+selectedDataset.value.toString()
         +'_output'
         data.query = 'select * from '+data['table_name']+ ' limit 10;'
         config['query'] = 'select * from '+data['table_name']
         config['example_row'] = null
-
+        k
         config['config'] = data
 
         saveDataset(config)

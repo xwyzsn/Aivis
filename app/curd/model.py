@@ -19,7 +19,9 @@ class Chart(Base):
 class Dashboard(Base):
     __tablename__ = "dashboard"
     dashboardid = Column(Integer, primary_key=True, index=True)
-    config = Column(JSON)
+    charts = Column(JSON)
+    layout = Column(JSON)
+    dashboard_name = Column(String)
 
 
 class DataSet(Base):

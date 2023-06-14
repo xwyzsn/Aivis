@@ -25,3 +25,4 @@ export function transferMapping(data, mapping) {
   }
   return newData;
 }
+

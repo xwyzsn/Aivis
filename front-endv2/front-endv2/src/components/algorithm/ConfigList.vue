@@ -1,6 +1,9 @@
 
 <template>
   <div class="w-full h-full overflow-y-scroll	 overflow-x-hidden	">
+      <el-button type="primary" @click="confirm">
+          确认参数
+      </el-button>
     <div class="mt-2 pl-2 " v-for="(i, idx)  in modelConfig" :key="idx">
       <el-row>
         <el-col :span="10">
@@ -26,6 +29,12 @@ const props = defineProps({
     required: true
   }
 })
+const emit = defineEmits(['confirmUpdate'])
+
+
 console.log(props.config)
 let modelConfig = ref(Object.entries(props.config).filter(item => { return item[0] !== 'input' && item[0] !== 'example' }))
+const confirm = () => {
+  emit('confirmUpdate', modelConfig.value)
+}
 </script>

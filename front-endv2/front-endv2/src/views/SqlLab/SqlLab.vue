@@ -53,7 +53,7 @@ import Editor from '../../components/sqllab/Editor.vue';
 import { useRoute } from 'vue-router';
 import { getDatasrcMeta, execQuery, saveDataset } from "../../api/sqllab/utils"
 import { ref, watch } from 'vue'
-import { ElMessage, tabNavEmits } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import MyHeader from '../../components/trivial/MyHeader.vue';
 let content = ref('')
 let tables = ref([])

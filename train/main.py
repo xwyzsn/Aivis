@@ -11,6 +11,25 @@ import threading
 from threading import Thread
 from utils import COLS, exec_cmd, MODELS
 import requests
+from Trainer import Trainer
+
+
+class triformer(Trainer):
+    def __init__(self, model, config):
+        super().__init__(model, config)
+
+    def start_train(self):
+        print("start train")
+
+    def get_predict(self):
+        print("get predict")
+
+    def write_to_db(self, config):
+        pass
+
+
+
+
 
 app = FastAPI()
 app.add_middleware(
@@ -46,7 +65,11 @@ def train_model(request: train_request):
         database_connection.create_table(columns)
         script = MODELS[request.model_name]
         #Thread(target=exec_cmd, args=(script,), daemon=True).start()
+        cols = [item[0] for item in columns]
+        database_connection.insert_into(cols,values=triformer.get_fake(['datetime','float','float'],100),types=
+                                        ['datetime','float','float'])
         msg['data']['table_name'] = table_name
+        # triformer.write_to_db()
 
     # datasets = {
     #     "query":"select * from ETTh2",

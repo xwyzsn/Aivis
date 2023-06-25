@@ -22,16 +22,20 @@ class Datasrc:
             cursor.execute(sql)
         self.connection.commit()
 
-    def insert_into(self,cols:List,values:List):
+    def insert_into(self,cols:List,values:List,types:list):
         with self.connection.cursor() as cursor:
             sql = f"INSERT INTO {self.table_name} ("
             for col in cols:
                 sql += f"{col},"
             sql = sql[:-1]
             sql += ") VALUES ("
-            for value in values:
-                sql += f"'{value}',"
+            for idx,value in enumerate(values):
+                if types[idx] != 'float':
+                    sql += f"'{value}',"
+                else:
+                    sql += f"{value},"
             sql = sql[:-1]
             sql += ")"
+            print(sql)
             cursor.execute(sql)
         self.connection.commit()

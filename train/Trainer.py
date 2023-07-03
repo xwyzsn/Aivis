@@ -12,11 +12,11 @@ class Trainer(ABC):
         self.config = config
 
     @abstractmethod
-    def start_train(self):
+    def start_train(self,*args,**kwargs):
         raise NotImplemented('start train not implemented')
 
     @abstractmethod
-    def get_predict(self):
+    def get_predict(self,*args,**kwargs):
         raise NotImplemented('get  predict not implemented')
 
     @staticmethod

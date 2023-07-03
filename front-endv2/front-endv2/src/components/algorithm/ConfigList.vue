@@ -33,7 +33,9 @@ const emit = defineEmits(['confirmUpdate'])
 
 
 console.log(props.config)
+
 let modelConfig = ref(Object.entries(props.config).filter(item => { return item[0] !== 'input' && item[0] !== 'example' }))
+modelConfig.value.unshift(['predict', false])
 const confirm = () => {
   emit('confirmUpdate', modelConfig.value)
 }

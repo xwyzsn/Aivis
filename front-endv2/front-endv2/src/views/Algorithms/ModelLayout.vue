@@ -60,6 +60,7 @@
                         </div>
                     </div>
 
+
                 </el-col>
             </el-row>
         </div>
@@ -107,7 +108,7 @@ let confirm = () => {
     let param = { 'model_name': selectedModel.value, 'dataset': datasets.value.filter(item => item.datasetid === selectedDataset.value)[0],
         'mapping': mapping.value, 'config': modelConfig.value}
     axios({
-        url:"http://localhost:5678/train",
+        url:"http://localhost:8001/train",
         method:"post",
         data:param
     }).then((res)=>{

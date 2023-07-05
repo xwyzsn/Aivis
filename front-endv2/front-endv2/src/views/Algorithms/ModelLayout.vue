@@ -50,7 +50,7 @@
                     <!-- <el-divider /> -->
                     <div class="h-1/3">
                         <div v-if="selectedModel && selectedDataset">
-                            <el-select v-for="item in mapping" :placeholder="item.desc" v-model="item.axis">
+                            <el-select  v-for="item in mapping" :placeholder="item.desc" v-model="item.axis" multiple>
                                 <el-option
                                     v-for="col in Object.keys(datasets.filter(item => item.datasetid === selectedDataset)[0].example_row)"
                                     :value="col">
@@ -75,6 +75,7 @@ import {ElMessage} from "element-plus";
 import ConfigList from '../../components/algorithm/ConfigList.vue'
 import DecChart from '../../components/charts/DecChart.vue';
 import {saveDataset} from "@/api/sqllab/utils";
+import dayjs from "dayjs";
 let bootstrap = useBootstrapStore();
 let models = ref(bootstrap.bootstrap.models);
 let datasets = ref(bootstrap.bootstrap.dataset);
@@ -109,7 +110,7 @@ let confirm = () => {
         'mapping': mapping.value, 'config': modelConfig.value}
     axios({
         url:"http://localhost:8001/train",
-        method:"post",
+        method:"POST",
         data:param
     }).then((res)=>{
         let response = res.data
@@ -123,12 +124,12 @@ let confirm = () => {
         let data = response.data
         data.dataset_name = response.data.table_name;
         let config = {}
+        let timestamp = dayjs().format('YYYY-MM-DD HH:mm:ss')
         config['dataset_name'] = selectedModel.value.toString()+'_'+selectedDataset.value.toString()
-        +'_output'
+        +'_output'+timestamp
         data.query = 'select * from '+data['table_name']+ ' limit 10;'
         config['query'] = 'select * from '+data['table_name']
         config['example_row'] = null
-        k
         config['config'] = data
 
         saveDataset(config)

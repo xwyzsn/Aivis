@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends,HTTPException
 import json
 from ..curd.service import datasrc_meta
-from ..curd.service.datasrc_meta import save_database
+from ..curd.service.datasrc_meta import save_database, delete_datasrc
 from ..curd.schemas import DataSource
 
 router = APIRouter(prefix="/datasrc", tags=["datasrc"])
@@ -39,4 +39,9 @@ def exec_query(datameta:DataSourceConfig = Depends(DataSourceConfig)):
 @router.post("/save_datasrc")
 async def save_database_controller(database:DataSource):
     msg = save_database(database)
+    return msg
+
+@router.delete("/delete_datasrc/{datasrc_id}")
+async def delete_datasrc_controller(datasrc_id:int):
+    msg = delete_datasrc(datasrc_id)
     return msg

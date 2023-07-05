@@ -1,7 +1,9 @@
 <template>
     <div class="w-full h-full">
-        <TimeSeries v-if="data.length > 0" class="w-full h-full" :is="props.ctype === 'TSL'" :form-data="data"
-                    :chart="props.chart" :mode="mode" ref="chart" />
+        <TimeSeries v-if="data && data.length > 0 && props.ctype==='TSL'" class="w-full h-full" :is="props.ctype === 'TSL'" :form-data="data"
+                    :chart="props.chart" :mode="mode" ref="chart" :mapping="props.mapping"/>
+        <LinePredictChart v-if="data && data.length>0 && props.ctype==='LPC'" class="w-full h-full" :is="props.ctype ==='LPC'" :form-data="data"
+                    :chart="props.chart" :mode="mode" ref="chart" :mapping="props.mapping"/>
     </div>
 </template>
  
@@ -10,6 +12,7 @@ import { ref,onMounted } from 'vue'
 import TimeSeries from './TimeSeries.vue';
 import { transferMapping } from '@/utils/utils';
 import { execQuery } from '@/api/sqllab/utils';
+import LinePredictChart from "@/components/charts/LinePredictChart.vue";
 let data = ref([])
 let chart = ref()
 const props = defineProps(
@@ -43,8 +46,9 @@ const props = defineProps(
 let fetchData = async () => {
     let datasource = props.dataset.config
     let result = await execQuery(datasource)
-    let trans = transferMapping(result.data, props.mapping)
-    return trans
+    // let trans = transferMapping(result.data, props.mapping)
+    // return trans
+  return result.data
 }
 fetchData().then(res => {
     data.value = res

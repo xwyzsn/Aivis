@@ -2,12 +2,20 @@ import json
 
 from fastapi import FastAPI,status
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, List
 from pydantic import BaseModel
 
 from service_register.db_utils import get_model_url
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class TrainRequest(BaseModel):

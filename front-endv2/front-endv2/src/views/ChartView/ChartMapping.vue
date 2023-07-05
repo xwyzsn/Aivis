@@ -1,14 +1,16 @@
 <template>
     <div class="w-full h-full flex">
         <div class="w-1/3 h-full bg-slate-300 flex flex-col space-y-4">
+
             <div v-for="(item, idx) in chartConfig">
                 <div class="m-2 text-lg">{{ item.label }}</div>
-                <el-select v-if="item.type === 'select'" :placeholder="item.desc" v-model="item.axis">
+                <el-select multiple v-if="item.type === 'select'" :placeholder="item.desc" v-model="item.axis">
                     <el-option v-for="item in dataCols" :label="item" :value="item">
                     </el-option>
                 </el-select>
                 <el-input v-else :placeholder="item.desc" v-model="item.axis"></el-input>
             </div>
+
             <div class="p-4 space-y-3">
                 <div class="w-full">
                 <el-button class="w-full" type="primary" @click="confirm">确认</el-button>
@@ -42,9 +44,9 @@
 </template>
  
 <script setup>
-import { ref } from 'vue'
+import {ref, watch} from 'vue'
 import { useRoute } from 'vue-router';
-import { useBootstrapStore } from '../../stores/counter';
+import { useBootstrapStore } from '@/stores/counter';
 import DecChart from '../../components/charts/DecChart.vue';
 import {saveChart} from "@/api/chart/chartApi";
 const bootstrapStore = useBootstrapStore();
@@ -59,14 +61,16 @@ let mapping = ref({})
 let showChart = ref(false)
 let saveChartModal = ref(false)
 let saveChartName = ref('')
+console.log(chartConfig.value,dataCols.value)
 let confirm = () => {
     let tmp = {}
     for (let i = 0; i < dataCols.value.length; i++) {
-        tmp[dataCols.value[i]] = chartConfig.value[i].value
-        console.log(chartConfig.value[i])
+        tmp[chartConfig.value[i]?.value] = chartConfig.value[i]?.axis
     }
     mapping.value = tmp
+  console.log("mapping", mapping.value)
     showChart.value = true
+
 }
 
 let handleOpenModal = ()=>{
@@ -93,6 +97,6 @@ let handleSaveChart = ()=>{
         saveChartName.value = ''
     })
 }
-</script> 
+</script>
  
 <style scoped></style>

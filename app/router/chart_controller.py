@@ -1,6 +1,6 @@
-from fastapi import FastAPI, APIRouter,Depends
+from fastapi import FastAPI, APIRouter, Depends
 from app.curd.schemas import ChartConfig
-from app.curd.service.chart_service import get_all_charts, save_chart
+from app.curd.service.chart_service import get_all_charts, save_chart, delete_chart
 
 router = APIRouter(prefix="/chart", tags=["chart"])
 
@@ -25,6 +25,22 @@ def save_chart_controller(chart=Depends(ChartConfig)):
         print("save")
         save_chart({"config": chart.config, "dataset": chart.dataset,
                     "mapping": chart.mapping})
+    except Exception as e:
+        print(e)
+        msg["code"] = 500
+        msg["data"] = str(e)
+    return msg
+
+
+@router.delete("/delete/{chart_id}")
+def delete_chart_controller(chart_id: int):
+    msg = {"code": 200, "data": "success"}
+    try:
+        res = delete_chart(chart_id)
+        if res:
+            after_delete = get_all_charts()
+            msg["data"] = after_delete
+        return msg
     except Exception as e:
         print(e)
         msg["code"] = 500

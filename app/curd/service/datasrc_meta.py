@@ -80,6 +80,21 @@ def save_database(payload):
         return msg
 
 
+def delete_datasrc(datasrc_id:int):
+    msg = {'code':200,'msg':'success','data':None}
+    try:
+        session = SessionLocal()
+        db = session
+        db.query(DataSource).filter(DataSource.datasourceid == datasrc_id).delete()
+        db.commit()
+        db.close()
+        return msg
+    except Exception as e :
+        msg['code']=500
+        msg['msg'] = 'fail '+ str(e)
+        return msg
+
+
 
 
 

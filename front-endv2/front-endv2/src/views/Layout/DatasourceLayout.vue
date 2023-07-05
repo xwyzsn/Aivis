@@ -21,7 +21,10 @@
         <el-table-column fixed="right" label="操作">
           <template #default="scope">
             <el-button link type="primary" size="small" @click.prevent="createDataset(scope.$index,scope.row)">
-              创建数据集
+              创建数据源
+            </el-button>
+              <el-button link type="primary" size="small" @click.prevent="deleteDatasource(scope.$index,scope.row)">
+              删除数据源
             </el-button>
           </template>
         </el-table-column>
@@ -67,7 +70,7 @@
 import {ref} from 'vue'
 import {useRouter} from 'vue-router';
 import {useBootstrapStore} from '../../stores/counter';
-import {saveDataSrc} from "@/api/datasource/datasrcApi";
+import {deleteDataSrc, saveDataSrc} from "@/api/datasource/datasrcApi";
 import {ElMessage} from "element-plus";
 
 const bootstrapStore = useBootstrapStore();
@@ -114,6 +117,17 @@ let createDataset = (idx, row) => {
   // convert config to URL search
   let query = "?" + new URLSearchParams(config)
   router.push({name: 'sqlLab', query: config})
+}
+let deleteDatasource = (idx,row)=>{
+  deleteDataSrc(row.datasourceid).then(res=>{
+    let response = res.data;
+    if (response.code === 200) {
+      ElMessage.success('success')
+      datasource.value.splice(idx,1)
+    } else {
+      ElMessage.error('error')
+    }
+  })
 }
 </script>
 

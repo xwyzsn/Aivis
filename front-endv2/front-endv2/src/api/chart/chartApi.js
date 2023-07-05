@@ -13,3 +13,10 @@ export function getAllChart() {
         url:'chart/get_all'
     })
 }
+
+export function deleteChart(payload) {
+    return api({
+        url:'chart/delete/'+payload.toString(),
+        method:"delete"
+    })
+}

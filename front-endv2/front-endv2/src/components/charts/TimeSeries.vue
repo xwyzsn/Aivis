@@ -53,10 +53,38 @@ const props = defineProps({
   },
   mode: {
     type: String
+  },
+  mapping: {
+    type: Object
   }
 })
+
+let transferMapping = () => {
+  let mapping = props.mapping
+  if (!mapping.hasOwnProperty('X') || !mapping.hasOwnProperty('X_predict') || !mapping.hasOwnProperty('date')) {
+    console.log('mapping object is not correct', mapping)
+    return
+  }
+    var out = []
+    for (let j = 0; j < mapping.X.length; j++) {
+      let data = []
+      for (let i = 0; i < props.formData.length; i++) {
+        data.push({
+          X: props.formData[i][mapping['X'][j]],
+          X_predict: props.formData[i][mapping['X_predict'][j]],
+          date: props.formData[i][mapping['date'][j]],
+          name:mapping['X'][j]
+        })
+      }
+      out.push(data)
+    }
+    console.log(out)
+  return out
+}
+
 let getdataTS = () => {
-  props.formData.forEach(element => {
+  let data = transferMapping()
+  data[0].forEach(element => {
     X.value.push(element.X);
     X_predict.value.push(element.X_predict);
     max.value.push(element.X + props.margin);

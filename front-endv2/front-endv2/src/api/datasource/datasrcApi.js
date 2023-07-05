@@ -7,3 +7,9 @@ export function saveDataSrc(payload) {
         method:'post'
     })
 }
+export function deleteDataSrc(payload) {
+    return api({
+        url:'/datasrc/delete_datasrc/'+payload.toString(),
+        method:'delete'
+    })
+}

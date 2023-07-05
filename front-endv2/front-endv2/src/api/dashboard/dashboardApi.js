@@ -8,3 +8,11 @@ export function saveBoard(payload) {
         method:'post'
     })
 }
+
+export function deleteBoard(payload){
+    return api({
+        url:'/dashboard/delete_dashboard',
+        data:payload,
+        method:'delete'
+    })
+}

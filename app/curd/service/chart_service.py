@@ -14,3 +14,14 @@ def save_chart(chart: dict):
     session.commit()
     session.refresh(chart)
     return chart
+
+
+def delete_chart(chart_id: int):
+    try:
+        session = SessionLocal()
+        session.query(Chart).filter(Chart.chartid == chart_id).delete()
+        session.commit()
+        return True
+    except Exception as e:
+        print(e)
+        return False

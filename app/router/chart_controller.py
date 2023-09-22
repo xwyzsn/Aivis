@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter, Depends
-from app.curd.schemas import ChartConfig
-from app.curd.service.chart_service import get_all_charts, save_chart, delete_chart
+from curd.schemas import ChartConfig
+from curd.service.chart_service import get_all_charts, save_chart, delete_chart
 
 router = APIRouter(prefix="/chart", tags=["chart"])
 

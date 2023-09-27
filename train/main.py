@@ -63,7 +63,7 @@ cnf参数如下
 
 
 @app.get("/train")
-def train_model(cnf: str):
+async def train_model(cnf: str):
     request = json.loads(cnf)
     dataset = request['dataset']
     print(dataset, type(dataset))
@@ -84,7 +84,7 @@ def train_model(cnf: str):
         # if not  request['predict']: ## 此外记得区分训练和预测
 
         # TODO:// 你也可以用线程或者进程执行,不然会阻塞！！！！！记得，记得训练的结果需要写入数据库
-        # triformer.start_train() # 训练，记得别阻塞！！！！
+        # await triformer.start_train() # 训练，记得别阻塞！！！！
 
         # Thread(target=exec_cmd, args=(script,), daemon=True).start() # 可以把这个写到start_train里面
 

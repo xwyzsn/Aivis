@@ -19,14 +19,14 @@ class Chart(BaseModel):
 
 
 class Dashboard(BaseModel):
-    dashboardid: int | None
+    dashboardid: int = None
     charts: List
     layout: List
-    dashboard_name: str | None
+    dashboard_name: str = None
 
 
 class DashboardConfig:
-    def __init__(self, dashboardid: int | None, charts: List, layout: List, dashboard_name: str):
+    def __init__(self, dashboardid: int | None, charts: List, layout: List, dashboard_name: str|None):
         self.dashboardid = dashboardid
         self.charts = charts
         self.layout = layout

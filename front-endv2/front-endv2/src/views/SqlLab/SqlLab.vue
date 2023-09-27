@@ -52,8 +52,8 @@
 import Editor from '../../components/sqllab/Editor.vue';
 import { useRoute } from 'vue-router';
 import { getDatasrcMeta, execQuery, saveDataset } from "../../api/sqllab/utils"
-import { ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ref, watch, h } from 'vue'
+import { ElMessage, ElMessageBox, ElInput, ElButton } from 'element-plus'
 import MyHeader from '../../components/trivial/MyHeader.vue';
 let content = ref('')
 let tables = ref([])
@@ -79,7 +79,6 @@ let runQuery = () => {
     query['query'] = content.value
     execQuery(query).then(res => {
         if (res.status !== 200) {
-            console.log(res)
             ElMessage.error(res.data.msg)
             return
         }
@@ -99,21 +98,43 @@ let saveClick = () => {
         ElMessage.error('请先执行查询语句 or 数据集为空')
         return
     }
-    let dataset = {
-        query: content.value,
-        example_row: queryRes.value[0],
-        config: query,
-        dataset_name: datasetName.value
-    }
-    saveDataset(dataset).then(res => {
-        if (res.status !== 200) {
-            ElMessage.error(res.data.msg)
-            return
+    ElMessageBox({
+        title: '数据集信息',
+        message: () =>
+            h('div', null, [
+                h('div', null, [
+                    h('span', null, '数据集名称'),
+                    h(ElInput, {
+                        placeholder: '请输入数据集名称',
+                        modelValue: datasetName.value,
+                        'onUpdate:modelValue': (val) => {
+                            datasetName.value = val
+                        },
+                    }),
+                ])
+            ]
+            ),
+        confirmButtonText: '确定'
+    }).then(() => {
+        let dataset = {
+            query: content.value,
+            example_row: queryRes.value[0],
+            config: query,
+            dataset_name: datasetName.value
         }
-        ElMessage.success('保存成功')
-    }).catch(err => {
-        ElMessage.error(err)
+        saveDataset(dataset).then(res => {
+            if (res.status !== 200) {
+                ElMessage.error(res.data.msg)
+                return
+            }
+            ElMessage.success('保存成功')
+        }).catch(err => {
+            ElMessage.error(err)
+        })
+    }).catch(action => {
+        ElMessage.info('取消保存')
     })
+
 }
 fetchDataSrcMeta()
 </script> 

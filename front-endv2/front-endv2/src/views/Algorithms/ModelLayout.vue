@@ -93,11 +93,9 @@ watch(selectedModel, (val, oldVal) => {
     example.value = model.model_config.example
 })
 let handleConfig = (arg)=>{
-    console.log(arg)
     arg.forEach(item=>{
         modelConfig.value[item[0]] = item[1]
     })
-    console.log(modelConfig.value)
 }
 
 let confirm = () => {
@@ -109,12 +107,12 @@ let confirm = () => {
     let param = { 'model_name': selectedModel.value, 'dataset': datasets.value.filter(item => item.datasetid === selectedDataset.value)[0],
         'mapping': mapping.value, 'config': modelConfig.value}
     axios({
+        //TODO: 不能这么恶心
         url:"http://localhost:8001/train",
         method:"POST",
         data:param
     }).then((res)=>{
         let response = res.data
-        console.log(response)
         ElMessage.success({
             message: '操作成功'+',输出数据集uid为'+response.data.table_name,
             type: 'success'

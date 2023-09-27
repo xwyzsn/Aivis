@@ -9,7 +9,7 @@
 
 <script setup>
 import * as echarts from 'echarts';
-import {ref, onMounted, nextTick} from "vue";
+import { ref, onMounted, nextTick } from "vue";
 
 const props = defineProps({
   width: {
@@ -23,8 +23,8 @@ const props = defineProps({
   formData: {
     type: Object
   },
-  mapping:{
-    type:Object
+  mapping: {
+    type: Object
   },
   chartType: {
     type: String,
@@ -50,47 +50,44 @@ const props = defineProps({
     type: String
   }
 })
-console.log('-----recieve data-----',props.formData)
 
 let transferMapping = () => {
   let mapping = props.mapping
-  console.log('mapping==========',mapping)
   if (!mapping.hasOwnProperty('x_orient') || !mapping.hasOwnProperty('x_predict')) {
     console.log('mapping object is not correct')
     return
   }
-    var out = []
-    for (let j = 0; j < mapping.x_orient.length; j++) {
-      let data = []
-      for (let i = 0; i < props.formData.length; i++) {
-        data.push({
-          x_orient: props.formData[i][mapping['x_orient'][j]],
-          X_predict: props.formData[i][mapping['x_predict'][j]],
-          date: props.formData[i][mapping['date'][j]],
-          name:mapping['x_orient'][j]
-        })
-      }
-      out.push(data)
-    }
-    console
+  var out = []
+  for (let j = 0; j < mapping.x_orient.length; j++) {
     let data = []
-    let num = out.length;
-    for (let i =0;i<num;i++){
-      let obj = {}
-      obj['name'] = out[i][0].name
-      obj['x_orient'] = []
-      obj['x_predict'] = []
-      obj['date'] = []
-      for (let j =0;j<out[i].length;j++){
-        obj['date'].push(out[i][j].date)
-        if(out[i][j].x_orient !== null)
-        obj['x_orient'].push(out[i][j].x_orient)
-        if(out[i][j].X_predict !== null)
-        obj['x_predict'].push(out[i][j].X_predict)
-      }
-      data.push(obj)
+    for (let i = 0; i < props.formData.length; i++) {
+      data.push({
+        x_orient: props.formData[i][mapping['x_orient'][j]],
+        X_predict: props.formData[i][mapping['x_predict'][j]],
+        date: props.formData[i][mapping['date'][j]],
+        name: mapping['x_orient'][j]
+      })
     }
-    console.log('out========',data)
+    out.push(data)
+  }
+  console
+  let data = []
+  let num = out.length;
+  for (let i = 0; i < num; i++) {
+    let obj = {}
+    obj['name'] = out[i][0].name
+    obj['x_orient'] = []
+    obj['x_predict'] = []
+    obj['date'] = []
+    for (let j = 0; j < out[i].length; j++) {
+      obj['date'].push(out[i][j].date)
+      if (out[i][j].x_orient !== null)
+        obj['x_orient'].push(out[i][j].x_orient)
+      if (out[i][j].X_predict !== null)
+        obj['x_predict'].push(out[i][j].X_predict)
+    }
+    data.push(obj)
+  }
   return data
 }
 let colors = ref(['#91cc75', '#5470c6', '#ee6666', '#7a22ef', '#3bbcd9']);
@@ -118,7 +115,7 @@ function getdata() {
     }
     series.value.push(item);
     legend.value.push(e.name + "原始值")
-    dates.value= e.date
+    dates.value = e.date
     let arr1 = new Array(e.x_orient.length - 1).fill(null).concat(e.x_orient[e.x_orient.length - 1])
     let arr2 = e.x_predict
     let arr3 = arr1.concat(arr2)
@@ -163,7 +160,8 @@ function initTimeSeries() { // 初始化时序数据预测图
         label: {
           backgroundColor: '#FF9900'
         }
-      }
+      },
+      show: props.mode === 'tooltip_disable' ? false : true
     },
     toolbox: {
       left: '80%',
@@ -186,7 +184,7 @@ function initTimeSeries() { // 初始化时序数据预测图
     },
     xAxis: {
       type: 'category',
-      data : dates.value
+      data: dates.value
     },
 
     yAxis: {
@@ -200,19 +198,19 @@ function initTimeSeries() { // 初始化时序数据预测图
         filterMode: 'filter'
       }
     ],
-    animationDuration: 2000
+    animationDuration: 0
   }
 
-  chartInstance.showLoading({
-    text: 'loading',
-    color: '#c23531',
-    textColor: '#000',
-    maskColor: 'rgba(255, 255, 255, 0.2)',
-    zlevel: 0,
-  })
+  // chartInstance.showLoading({
+  //   text: 'loading',
+  //   color: '#c23531',
+  //   textColor: '#000',
+  //   maskColor: 'rgba(255, 255, 255, 0.2)',
+  //   zlevel: 0,
+  // })
   setTimeout(() => {
 
-    chartInstance.hideLoading()
+    // chartInstance.hideLoading()
     chartInstance.setOption(initOption)
     chartInstance.on('finished', function () {
       if (props.mode === 'pic') {
@@ -242,7 +240,7 @@ const resizeWindow = () => {
   chartInstance.resize()
 }
 const refreshData = () => {
-    const initOption = {
+  const initOption = {
     legend: {
       // data: this.legend,
       top: '5%'
@@ -255,7 +253,9 @@ const refreshData = () => {
         label: {
           backgroundColor: '#FF9900'
         }
-      }
+      },
+      show: props.mode === 'tooltip_disable' ? false : true
+
     },
     toolbox: {
       left: '80%',
@@ -278,7 +278,7 @@ const refreshData = () => {
     },
     xAxis: {
       type: 'category',
-      data : dates.value
+      data: dates.value
     },
 
     yAxis: {
@@ -309,6 +309,4 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

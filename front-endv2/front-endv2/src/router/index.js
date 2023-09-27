@@ -1,5 +1,5 @@
-import {createRouter, createWebHistory} from 'vue-router'
-
+import { createRouter, createWebHistory } from 'vue-router'
+import { DashboardView } from '../views/DashboardView/DashboardView'
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -23,6 +23,11 @@ const router = createRouter({
                     component: () => import('../views/Algorithms/ModelLayout.vue')
                 },
                 {
+                    path: 'pipeline',
+                    component: () => import('../views/Pipeline/PipeView.vue'),
+                    name: 'pipeline'
+                },
+                {
                     path: 'chart', component: () => import('../views/ChartView/NewChartView.vue'), name: 'newChartView',
                     redirect: '/sys/chart/choose',
                     children: [
@@ -43,8 +48,8 @@ const router = createRouter({
                     component: () => import('../views/Layout/DatasourceLayout.vue'),
                     name: 'datasourceLayout',
                 },
-                {path: 'sqllab', component: () => import('../views/SqlLab/SqlLab.vue'), name: 'sqlLab'},
-                {path: 'mapping', component: () => import('../views/ChartView/ChartMapping.vue'), name: 'chartmapping'},
+                { path: 'sqllab', component: () => import('../views/SqlLab/SqlLab.vue'), name: 'sqlLab' },
+                { path: 'mapping', component: () => import('../views/ChartView/ChartMapping.vue'), name: 'chartmapping' },
                 {
                     path: 'dashboard',
                     component: () => import('../views/DashboardView/CreateDashbord.vue'),
@@ -57,11 +62,11 @@ const router = createRouter({
                 },
                 {
                     path: 'dashboardView',
-                    component: () => import('../views/DashboardView/DashboardView.vue'),
+                    component: DashboardView,
                     name: 'dashboardView'
                 }
             ]
-        },
+        }
         // {
         //   path:'/chart/:id',
         //   name:'detailchart',

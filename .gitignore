@@ -14,3 +14,4 @@
 /app/*/*/__pycache__/
 /app/backend/
 /*/__pycache__
+/test.py

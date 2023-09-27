@@ -10,7 +10,7 @@
 
 <script setup>
 import * as echarts from 'echarts';
-import {ref, onMounted, nextTick} from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 
 let X = ref([])
 let X_predict = ref([])
@@ -65,20 +65,19 @@ let transferMapping = () => {
     console.log('mapping object is not correct', mapping)
     return
   }
-    var out = []
-    for (let j = 0; j < mapping.X.length; j++) {
-      let data = []
-      for (let i = 0; i < props.formData.length; i++) {
-        data.push({
-          X: props.formData[i][mapping['X'][j]],
-          X_predict: props.formData[i][mapping['X_predict'][j]],
-          date: props.formData[i][mapping['date'][j]],
-          name:mapping['X'][j]
-        })
-      }
-      out.push(data)
+  var out = []
+  for (let j = 0; j < mapping.X.length; j++) {
+    let data = []
+    for (let i = 0; i < props.formData.length; i++) {
+      data.push({
+        X: props.formData[i][mapping['X'][j]],
+        X_predict: props.formData[i][mapping['X_predict'][j]],
+        date: props.formData[i][mapping['date'][j]],
+        name: mapping['X'][j]
+      })
     }
-    console.log(out)
+    out.push(data)
+  }
   return out
 }
 
@@ -191,7 +190,9 @@ let initTimeSeries = () => { // 初始化时序数据预测图
         label: {
           backgroundColor: 'rgba(0,122,255,0.6)'
         }
-      }
+      },
+      show: props.mode === 'tooltip_disable' ? false : true
+
     },
     toolbox: {
       left: '80%',
@@ -228,15 +229,15 @@ let initTimeSeries = () => { // 初始化时序数据预测图
     ],
     animationDuration: 2000
   }
-  chartInstance.showLoading({
-    text: 'loading',
-    color: '#c23531',
-    textColor: '#000',
-    maskColor: 'rgba(255, 255, 255, 0.2)',
-    zlevel: 0,
-  })
+  // chartInstance.showLoading({
+  //   text: 'loading',
+  //   color: '#c23531',
+  //   textColor: '#000',
+  //   maskColor: 'rgba(255, 255, 255, 0.2)',
+  //   zlevel: 0,
+  // })
   setTimeout(() => {
-    chartInstance.hideLoading()
+    // chartInstance.hideLoading()
     chartInstance.setOption(initOption)
     chartInstance.on('finished', function () {
       if (props.mode === 'pic') {
@@ -258,7 +259,7 @@ let initTimeSeries = () => { // 初始化时序数据预测图
         }
       }
     })
-  }, 1000)
+  }, 0)
 
 }
 const resizeWindow = () => {
@@ -362,7 +363,8 @@ let refreshData = () => {
         label: {
           backgroundColor: 'rgba(0,122,255,0.6)'
         }
-      }
+      },
+      show: props.mode === 'tooltip_disable' ? false : true
     },
     toolbox: {
       left: '80%',
@@ -397,7 +399,7 @@ let refreshData = () => {
         filterMode: 'filter'
       }
     ],
-    animationDuration: 2000
+    animationDuration: 0
   }
   let chartInstance = echarts.getInstanceByDom(document.getElementById(props.chart))
   chartInstance.setOption(initOption)

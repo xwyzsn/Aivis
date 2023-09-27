@@ -26,3 +26,8 @@ export function transferMapping(data, mapping) {
   return newData;
 }
 
+
+
+export function GenNonDuplicateID() {
+  return Math.random().toString()
+}

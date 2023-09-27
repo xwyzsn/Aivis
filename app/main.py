@@ -32,3 +32,7 @@ def get_db():
 @app.get("/bootstrap")
 def bootstrap(db: SessionLocal = Depends(get_db)):
     return curd.bootstrap(db)
+
+@app.get("/health")
+def health_check():
+    return {"ok":"ok"}

@@ -61,14 +61,12 @@ let mapping = ref({})
 let showChart = ref(false)
 let saveChartModal = ref(false)
 let saveChartName = ref('')
-console.log(chartConfig.value,dataCols.value)
 let confirm = () => {
     let tmp = {}
     for (let i = 0; i < dataCols.value.length; i++) {
         tmp[chartConfig.value[i]?.value] = chartConfig.value[i]?.axis
     }
     mapping.value = tmp
-  console.log("mapping", mapping.value)
     showChart.value = true
 
 }
@@ -77,7 +75,6 @@ let handleOpenModal = ()=>{
     saveChartModal.value = true
 }
 let handleSaveChart = ()=>{
-    console.log(mapping.value)
     let cfg = {"type":chart.value}
     chartConfig.value.forEach(item=>{
         let type = item.type
@@ -92,7 +89,6 @@ let handleSaveChart = ()=>{
         mapping: mapping.value
     }
     saveChart(payload).then(res=>{
-        console.log(res.data)
         saveChartModal.value = false
         saveChartName.value = ''
     })

@@ -4,7 +4,6 @@ import {ref} from 'vue'
 import { useBootstrapStore } from './stores/counter';
 const bootstrapStore = useBootstrapStore();
 bootstrapStore.setBootstrap().then(()=>{
-  console.log(bootstrapStore.bootstrap);
 });
 
 </script>

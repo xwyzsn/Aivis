@@ -1,7 +1,6 @@
 import { api } from '../axios'
 
 export function getDatasrcMeta(config) {
-    console.log(config)
     return api.post('/datasrc/meta', config)
 }
 

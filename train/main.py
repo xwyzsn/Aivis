@@ -2,6 +2,7 @@ import json
 import uuid
 
 import uvicorn
+import random
 from fastapi import FastAPI, Request
 from typing import Dict, List
 from pydantic import BaseModel
@@ -10,23 +11,25 @@ from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 import threading
 from threading import Thread
-from utils import COLS, exec_cmd, MODELS
-import requests
-from Trainer import Trainer
+import multiprocessing
+import os 
+import time
+import asyncio
+import re 
+import subprocess
 
+# class triformer(Trainer):
+#     def __init__(self, model, config):
+#         super().__init__(model, config)
 
-class triformer(Trainer):
-    def __init__(self, model, config):
-        super().__init__(model, config)
+#     def start_train(self):
+#         print("start train")
 
-    def start_train(self):
-        print("start train")
+#     def get_predict(self):
+#         print("get predict")
 
-    def get_predict(self):
-        print("get predict")
-
-    def write_to_db(self, config):
-        pass
+#     def write_to_db(self, config):
+#         pass
 
 
 app = FastAPI()
@@ -60,6 +63,44 @@ cnf参数如下
 "mapping":[{"value":"date","label":"x","type":"select","desc":"横坐标,用于表示时序","axis":"date"},{"value":"X","label":"y_true","type":"select","desc":"纵坐标,用于表示实际值","axis":"HUFL"}],
 "config":{}}
 """
+def exec_parse_write(db:Datasrc, cmd, table_name):
+    print("training start")
+    db.create_table([('x', 'int'), ('y', 'float'),('z','float')])
+
+    file_check_event = threading.Event()
+
+    file_thread = threading.Thread(target=spy_file, args=(db,table_name, file_check_event))
+    file_thread.start()
+
+    process = subprocess.Popen(f"{cmd} > {table_name}", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    process.wait()
+
+    file_check_event.set()
+
+    file_thread.join()
+
+def spy_file(db:Datasrc,table_name, file_check_event):
+    while not file_check_event.is_set():
+        if os.path.exists(table_name):
+            with open(table_name, 'r') as file:
+                data = file.read()
+                x_values = [int(match.group(1)) for match in re.finditer(r'x:(\d+)', data)]
+                y_values = [ random.random() for i in range(len(x_values))]
+                z_values = [ random.random() for i in range(len(x_values))]
+            db.clear_table()
+            for i in range(len(x_values)):
+                db.insert_into(['x','y','z'],[x_values[i],y_values[i],z_values[i]],['int','float','float'])
+        time.sleep(1) 
+
+    print("File monitoring thread is terminating.")
+
+
+
+
+async def run_long_running_function(*args):
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, exec_parse_write,*args)
 
 
 @app.get("/train")
@@ -70,39 +111,25 @@ async def train_model(cnf: str):
     data_src = dataset['config']
     msg = {"code": 200, "data": {"host": data_src['host'], "port": data_src['port'],
                                  "user": data_src['user'], "password": data_src['password'],
-                                 "database": data_src['database'], "table_name": None}}
+                                 "database": data_src['database'], "table_name": None,"example_row":{"x":1,"y":0.2,"z":0.3}}}
     try:
         table_name = uuid.uuid4().hex
         database_connection = Datasrc(host=data_src['host'], port=int(data_src['port']),
                                       user=data_src['user'], password=data_src['password'],
                                       database=data_src['database'],
                                       table_name=table_name)
-        columns = COLS[request['model_name']]
-        database_connection.create_table(columns)
-        script = MODELS[request['model_name']]
+        # 从mapping里拿出用于训练的列名
+        x = request['mapping'][0]['axis'] # x=['date', 'HUFL', 'HULL', 'MUFL', 'MULL', 'LUFL', 'LULL'],y=['OT']
+        y = request['mapping'][1]['axis']
 
-        # if not  request['predict']: ## 此外记得区分训练和预测
+        # 构造训练数据从数据库里拿，保存读出到的数据到本地，然后调用训练脚本
+        query = dataset['query'] # 省略读取数据的代码
 
-        # TODO:// 你也可以用线程或者进程执行,不然会阻塞！！！！！记得，记得训练的结果需要写入数据库
-        # await triformer.start_train() # 训练，记得别阻塞！！！！
+        # 调用训练脚本
+        asyncio.create_task(run_long_running_function(database_connection,"cd /Users/jan/Desktop/aivis && ./test.sh ",table_name))
 
-        # Thread(target=exec_cmd, args=(script,), daemon=True).start() # 可以把这个写到start_train里面
-
-        # TODO:// 模型的结果要记得写入数据库记得别阻塞！！！！,
-        # 此外你可以把write_to_db写在start_train里面，
-        # 这样就不用再写一个线程了，因为模型的输出的时间是很长的，所以最好是写在start_train里面
-        # 但是记得别阻塞！！！！
-        # triformer.write_to_db()
-        #
-        #
-        # 下面是一个fake example，忽略就好
-        # cols = [item[0] for item in columns]
-        # database_connection.insert_into(cols, values=triformer.get_fake(['datetime', 'float', 'float'], 100), types=
-        # ['datetime', 'float', 'float'])
-
-
-        # 返回结果表名
         msg['data']['table_name'] = table_name
+        return msg
 
     except Exception as e:
         print("err", e)
@@ -110,6 +137,12 @@ async def train_model(cnf: str):
         msg['data'] = None
     return msg
 
+
+@app.get("/predict")
+async def test():
+    asyncio.create_task(run_long_running_function(None,"cd /Users/jan/Desktop/aivis && ./test.sh ",'111'))
+    
+    return {"code": 200, "data": "ok"}
 
 if __name__ == '__main__':
     uvicorn.run(app, port=5678)

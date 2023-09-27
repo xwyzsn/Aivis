@@ -65,6 +65,7 @@ let transferMapping = () => {
     console.log('mapping object is not correct', mapping)
     return
   }
+  console.log(props.formData)
   var out = []
   for (let j = 0; j < mapping.X.length; j++) {
     let data = []
@@ -83,6 +84,7 @@ let transferMapping = () => {
 
 let getdataTS = () => {
   let data = transferMapping()
+  console.log(data)
   data[0].forEach(element => {
     X.value.push(element.X);
     X_predict.value.push(element.X_predict);

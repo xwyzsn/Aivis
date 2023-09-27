@@ -50,7 +50,7 @@
                     <!-- <el-divider /> -->
                     <div class="h-1/3">
                         <div v-if="selectedModel && selectedDataset">
-                            <el-select  v-for="item in mapping" :placeholder="item.desc" v-model="item.axis" multiple>
+                            <el-select v-for="item in mapping" :placeholder="item.desc" v-model="item.axis" multiple>
                                 <el-option
                                     v-for="col in Object.keys(datasets.filter(item => item.datasetid === selectedDataset)[0].example_row)"
                                     :value="col">
@@ -69,12 +69,12 @@
  
 <script setup>
 import { ref, watch } from 'vue'
-import {axios} from '../../api/axios'
+import { axios } from '../../api/axios'
 import { useBootstrapStore } from '../../stores/counter';
-import {ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 import ConfigList from '../../components/algorithm/ConfigList.vue'
 import DecChart from '../../components/charts/DecChart.vue';
-import {saveDataset} from "@/api/sqllab/utils";
+import { saveDataset } from "@/api/sqllab/utils";
 import dayjs from "dayjs";
 let bootstrap = useBootstrapStore();
 let models = ref(bootstrap.bootstrap.models);
@@ -92,8 +92,8 @@ watch(selectedModel, (val, oldVal) => {
     mapping.value = model.model_config.input
     example.value = model.model_config.example
 })
-let handleConfig = (arg)=>{
-    arg.forEach(item=>{
+let handleConfig = (arg) => {
+    arg.forEach(item => {
         modelConfig.value[item[0]] = item[1]
     })
 }
@@ -104,30 +104,33 @@ let confirm = () => {
     formData.append('dataset', datasets.value.filter(item => item.datasetid === selectedDataset.value)[0])
     formData.append('mapping', mapping.value)
     formData.append('config', models.value.filter(model => model.model_name === selectedModel.value)[0].model_config)
-    let param = { 'model_name': selectedModel.value, 'dataset': datasets.value.filter(item => item.datasetid === selectedDataset.value)[0],
-        'mapping': mapping.value, 'config': modelConfig.value}
+    let param = {
+        'model_name': selectedModel.value, 'dataset': datasets.value.filter(item => item.datasetid === selectedDataset.value)[0],
+        'mapping': mapping.value, 'config': modelConfig.value
+    }
     axios({
         //TODO: 不能这么恶心
-        url:"http://localhost:8001/train",
-        method:"POST",
-        data:param
-    }).then((res)=>{
+        url: "http://localhost:8001/train",
+        method: "POST",
+        data: param
+    }).then((res) => {
         let response = res.data
         ElMessage.success({
-            message: '操作成功'+',输出数据集uid为'+response.data.table_name,
+            message: '操作成功' + ',输出数据集uid为' + response.data.table_name,
             type: 'success'
         });
         return response
-    }).then(response=>{
+    }).then(response => {
         let data = response.data
         data.dataset_name = response.data.table_name;
         let config = {}
-        let timestamp = dayjs().format('YYYY-MM-DD HH:mm:ss')
-        config['dataset_name'] = selectedModel.value.toString()+'_'+selectedDataset.value.toString()
-        +'_output'+timestamp
-        data.query = 'select * from '+data['table_name']+ ' limit 10;'
-        config['query'] = 'select * from '+data['table_name']
-        config['example_row'] = null
+        // let timestamp = dayjs().format('YYYY-MM-DD HH:mm:ss')
+        // config['dataset_name'] = selectedModel.value.toString()+'_'+selectedDataset.value.toString()
+        // +'_output'+timestamp
+        data.query = 'select * from ' + data['table_name'] 
+        config['dataset_name'] = data.table_name
+        config['query'] = 'select * from ' + data['table_name']
+        config['example_row'] = data['example_row']
         config['config'] = data
 
         saveDataset(config)

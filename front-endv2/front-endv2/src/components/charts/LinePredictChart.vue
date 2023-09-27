@@ -54,7 +54,7 @@ const props = defineProps({
 let transferMapping = () => {
   let mapping = props.mapping
   if (!mapping.hasOwnProperty('x_orient') || !mapping.hasOwnProperty('x_predict')) {
-    console.log('mapping object is not correct')
+    console.log('mapping object is not correct', mapping)
     return
   }
   var out = []

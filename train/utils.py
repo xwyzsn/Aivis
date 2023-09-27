@@ -12,30 +12,16 @@ COLS = {
         ("y_pred","float")
     ]
 }
-
-def exec_cmd(cmd:str):
-    """
-    Execute a command in the terminal,write the output to the ./tmp/
-    """
-    # tmp_file = f"./tmp/{uuid.uuid4()}.tmp"
-    # os.system(f"{cmd} > {tmp_file}")
-    # with open(tmp_file,"r") as f:
-    #     output = f.read()
-    # os.remove(tmp_file)
-    # return output
-    try:
-        cmd  = f"cd  G:\\desktop\\ToTrain\\train\Triformer && {cmd}"
-        print(f"runing {cmd}")
-        res = subprocess.run(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,encoding='gbk')
-        if res.returncode == 0:
-            print(res.stdout)
-            return res.stdout
-        else:
-            print(res.stderr)
-            return res.stderr
-    except Exception as e:
-        print(e)
+import re 
+def parse(data):
+    x_values = [int(match.group(1)) for match in re.finditer(r'x:(\d+)', data)]
+    y_values = [float(match.group(1)) for match in re.finditer(r'y:(.\d+)', data)]
+    return x_values, y_values
+        
 
 if __name__ == '__main__':
-    print(exec_cmd("dir"))
+    with open('./78f3e7da484c45d4b76c33a582ee185e') as f :
+        data = f.read()
+        print(parse(data))
+
 

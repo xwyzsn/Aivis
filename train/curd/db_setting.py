@@ -30,12 +30,18 @@ class Datasrc:
             sql = sql[:-1]
             sql += ") VALUES ("
             for idx,value in enumerate(values):
-                if types[idx] != 'float':
+                if types[idx] != 'float' or types[idx] != 'int':
                     sql += f"'{value}',"
                 else:
                     sql += f"{value},"
             sql = sql[:-1]
             sql += ")"
             print(sql)
+            cursor.execute(sql)
+        self.connection.commit()
+
+    def clear_table(self):
+        with self.connection.cursor() as cursor:
+            sql = f"DELETE  from {self.table_name}"
             cursor.execute(sql)
         self.connection.commit()

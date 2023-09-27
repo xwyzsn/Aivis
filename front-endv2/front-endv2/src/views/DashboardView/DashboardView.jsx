@@ -34,6 +34,7 @@ export const DashboardView = defineComponent({
         let refreshCall = () => {
             itemRefs.value.forEach(item => {
                 item.refreshData()
+                
             })
         }
         let query = JSON.parse(route.query.config)

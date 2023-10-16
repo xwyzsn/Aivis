@@ -85,7 +85,7 @@ const router = useRouter()
 const bootstrapStore = useBootstrapStore();
 let options = ref(bootstrapStore.bootstrap.dataset);
 //TODO: // replace chart with real data
-let chartOption = ref(['TSL', 'LPC'])
+let chartOption = ref(['TSL', 'LPC', 'Table'])
 let chartValue = ref([])
 let value = ref(null);
 let active = ref(1)

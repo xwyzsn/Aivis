@@ -70,7 +70,6 @@ let transferMapping = () => {
     }
     out.push(data)
   }
-  console
   let data = []
   let num = out.length;
   for (let i = 0; i < num; i++) {

@@ -15,6 +15,9 @@
 /app/backend/
 /*/__pycache__
 /test.py
+venv/
+__pycache__/
+.DS_Store
 /test.sh
 /*/venv
 /*/*/__pycache__

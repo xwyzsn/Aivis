@@ -1,12 +1,14 @@
 from pydantic import BaseModel
-from typing import List,Union,Dict
+from typing import List, Union, Dict
+
 
 class DataSource(BaseModel):
-    datasourceid: int
+    datasourceid: int|None
     config: dict
 
     class Config:
         orm_mode = True
+
 
 class Chart(BaseModel):
     chartid: int
@@ -17,21 +19,30 @@ class Chart(BaseModel):
 
 
 class Dashboard(BaseModel):
-    dashboardid: int
-    config: dict
+    dashboardid: int = None
+    charts: List
+    layout: List
+    dashboard_name: str = None
 
-    class Config:
-        orm_mode = True
+
+class DashboardConfig:
+    def __init__(self, dashboardid: int | None, charts: List, layout: List, dashboard_name: str|None):
+        self.dashboardid = dashboardid
+        self.charts = charts
+        self.layout = layout
+        self.dashboard_name = dashboard_name
+
 
 class Dataset(BaseModel):
     datasetid: int
     query: str
-    example_row: Union[Dict,None]
-    config: Union[Dict,None]
+    example_row: Union[Dict, None]
+    config: Union[Dict, None]
     dataset_name: str
 
     class Config:
         orm_mode = True
+
 
 class ChartTemplate(BaseModel):
     cid: int
@@ -41,13 +52,15 @@ class ChartTemplate(BaseModel):
     class Config:
         orm_mode = True
 
+
 class Model(BaseModel):
     id: int
     model_name: str
     model_config: dict
-    
+
     class Config:
         orm_mode = True
+
 
 class Bootstrap(BaseModel):
     datasource: List[DataSource]
@@ -60,24 +73,32 @@ class Bootstrap(BaseModel):
     class Config:
         orm_mode = True
 
+
 class DataSourceConfig:
-    def __init__(self,config:dict):
+    def __init__(self, config: dict):
         print(config)
         self.host = config['host']
-        self.port = config['port'] 
+        self.port = config['port']
         self.user = config['user']
         self.password = config['password']
-        self.type = config['type'] 
+        self.type = config['type']
         self.database = config['database']
-        self.table = config.get('table',None)
-        self.query = config.get('query',None)
+        self.table = config.get('table', None)
+        self.query = config.get('query', None)
 
 
 class DataSetConfig:
-    def __init__(self,config:Union[dict,None],
-                 dataset_name:str,
-                 query:str,example_row: Union [Dict , None]):
+    def __init__(self, config: Union[dict, None],
+                 dataset_name: str,
+                 query: str, example_row: Union[Dict, None]):
         self.config = config
         self.query = query
         self.example_row = example_row
         self.dataset_name = dataset_name
+
+
+class ChartConfig:
+    def __init__(self, config: Union[dict, None], dataset: dict, mapping: dict):
+        self.config = config
+        self.dataset = dataset
+        self.mapping = mapping

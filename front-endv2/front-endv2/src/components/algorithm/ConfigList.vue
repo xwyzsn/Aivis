@@ -1,6 +1,9 @@
 
 <template>
   <div class="w-full h-full overflow-y-scroll	 overflow-x-hidden	">
+    <el-button type="primary" @click="confirm">
+      确认参数
+    </el-button>
     <div class="mt-2 pl-2 " v-for="(i, idx)  in modelConfig" :key="idx">
       <el-row>
         <el-col :span="10">
@@ -20,12 +23,21 @@
 </template>
 <script setup>
 import { ref } from 'vue';
+import { ElMessage } from 'element-plus'
 const props = defineProps({
   config: {
     type: Object,
     required: true
   }
 })
-console.log(props.config)
+const emit = defineEmits(['confirmUpdate'])
+
+
+
 let modelConfig = ref(Object.entries(props.config).filter(item => { return item[0] !== 'input' && item[0] !== 'example' }))
+modelConfig.value.unshift(['predict', false])
+const confirm = () => {
+  emit('confirmUpdate', modelConfig.value)
+  ElMessage.success('参数更新成功')
+}
 </script>

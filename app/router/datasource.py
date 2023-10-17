@@ -2,10 +2,9 @@ from fastapi import APIRouter, Depends
 from typing import List
 from sqlalchemy.orm import Session
 import sys
-sys.path.append("..") 
-from ..curd.sqlconfig import SessionLocal
-from ..curd.service import curd
-from ..curd import schemas,model
+from curd.sqlconfig import SessionLocal
+from curd.service import curd
+from curd import schemas,model
 
 
 router = APIRouter(prefix="/datasource", tags=["datasource"])

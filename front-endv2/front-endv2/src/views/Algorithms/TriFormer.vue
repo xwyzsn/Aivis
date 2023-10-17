@@ -41,7 +41,6 @@ getConfig().then((res) => {
 })
 getError().then((res) => {
     data.value = res.data.result["train_dict"];
-    console.log(data.value);
 })
 
 </script>

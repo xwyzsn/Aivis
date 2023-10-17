@@ -46,7 +46,6 @@ onMounted(()=>
         }]
         })
     })
-    console.log(props.data);
     myChart.setOption(
     {
         title: {

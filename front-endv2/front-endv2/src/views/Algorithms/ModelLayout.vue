@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-full">
+    <div class="w-full h-screen">
         <div class="flex justify-evenly">
             <div>
                 <span>
@@ -127,7 +127,7 @@ let confirm = () => {
         // let timestamp = dayjs().format('YYYY-MM-DD HH:mm:ss')
         // config['dataset_name'] = selectedModel.value.toString()+'_'+selectedDataset.value.toString()
         // +'_output'+timestamp
-        data.query = 'select * from ' + data['table_name'] 
+        data.query = 'select * from ' + data['table_name']
         config['dataset_name'] = data.table_name
         config['query'] = 'select * from ' + data['table_name']
         config['example_row'] = data['example_row']

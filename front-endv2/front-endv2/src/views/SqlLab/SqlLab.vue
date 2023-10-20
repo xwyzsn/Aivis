@@ -1,7 +1,6 @@
 <template>
-    <div class="w-full h-full ">
-
-        <div class="flex justify-evenly h-2/3">
+    <div class="w-full h-screen ">
+        <div class="flex justify-evenly h-3/5">
             <div class="border-1 border-slate-300 w-1/3 h-full " style="border:  1px solid;">
                 <el-descriptions class="p-2" title="数据库信息">
                     <el-descriptions-item :label="item[0]" v-for="item in Object.entries(query)">
@@ -33,7 +32,7 @@
         <div>
             <MyHeader content="查询结果" />
             <div class="w-full m-auto">
-                <el-table class="w-full overflow-y-scroll overflow-x-hidden " :data="queryRes">
+                <el-table class="w-full max-h-44 overflow-y-scroll overflow-x-hidden " :data="queryRes">
                     <el-table-column v-for="key, idx in tableCol " :prop="key" :label="key">
                     </el-table-column>
                 </el-table>

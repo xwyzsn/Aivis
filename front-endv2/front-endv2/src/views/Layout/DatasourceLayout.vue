@@ -1,15 +1,15 @@
 <template>
   <div class="w-full h-full">
-    <div class="w-full flex justify-evenly">
-      <div>
+    <div class="w-full flex justify-start">
+      <!-- <div>
         <el-input v-model="name" palceholder="输入查询的数据源信息">
         </el-input>
       </div>
       <div>
         <el-button type="primary">搜索</el-button>
-      </div>
+      </div> -->
       <div>
-        <el-button type="primary" @click="addNewModal=true">添加</el-button>
+        <el-button type="primary" @click="addNewModal = true">添加</el-button>
       </div>
     </div>
     <div>
@@ -20,10 +20,10 @@
         <el-table-column label="type" prop="config.type"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template #default="scope">
-            <el-button link type="primary" size="small" @click.prevent="createDataset(scope.$index,scope.row)">
+            <el-button link type="primary" size="small" @click.prevent="createDataset(scope.$index, scope.row)">
               创建数据源
             </el-button>
-              <el-button link type="primary" size="small" @click.prevent="deleteDatasource(scope.$index,scope.row)">
+            <el-button link type="primary" size="small" @click.prevent="deleteDatasource(scope.$index, scope.row)">
               删除数据源
             </el-button>
           </template>
@@ -54,7 +54,7 @@
       </el-form>
       <template #footer>
         <div class="float-right">
-          <el-button type="primary" @click="()=>{addConfirm()}">
+          <el-button type="primary" @click="() => { addConfirm() }">
             确定
           </el-button>
         </div>
@@ -63,15 +63,14 @@
     </el-dialog>
 
   </div>
-
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import {useRouter} from 'vue-router';
-import {useBootstrapStore} from '../../stores/counter';
-import {deleteDataSrc, saveDataSrc} from "@/api/datasource/datasrcApi";
-import {ElMessage} from "element-plus";
+import { ref } from 'vue'
+import { useRouter } from 'vue-router';
+import { useBootstrapStore } from '../../stores/counter';
+import { deleteDataSrc, saveDataSrc } from "@/api/datasource/datasrcApi";
+import { ElMessage } from "element-plus";
 
 const bootstrapStore = useBootstrapStore();
 const router = useRouter()
@@ -116,14 +115,14 @@ let createDataset = (idx, row) => {
   let config = row.config
   // convert config to URL search
   let query = "?" + new URLSearchParams(config)
-  router.push({name: 'sqlLab', query: config})
+  router.push({ name: 'sqlLab', query: config })
 }
-let deleteDatasource = (idx,row)=>{
-  deleteDataSrc(row.datasourceid).then(res=>{
+let deleteDatasource = (idx, row) => {
+  deleteDataSrc(row.datasourceid).then(res => {
     let response = res.data;
     if (response.code === 200) {
       ElMessage.success('success')
-      datasource.value.splice(idx,1)
+      datasource.value.splice(idx, 1)
     } else {
       ElMessage.error('error')
     }

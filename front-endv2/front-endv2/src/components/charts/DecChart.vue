@@ -18,6 +18,7 @@ import { transferMapping } from '@/utils/utils';
 import { execQuery } from '@/api/sqllab/utils';
 import LinePredictChart from "@/components/charts/LinePredictChart.vue";
 import TableChart from './TableChart.vue';
+import TimeSeries from '@/components/charts/TimeSeries.vue';
 let data = ref([])
 let chart = ref()
 const props = defineProps(

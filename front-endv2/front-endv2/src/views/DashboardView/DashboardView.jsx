@@ -34,7 +34,7 @@ export const DashboardView = defineComponent({
         let refreshCall = () => {
             itemRefs.value.forEach(item => {
                 item.refreshData()
-                
+
             })
         }
         let query = JSON.parse(route.query.config)
@@ -85,7 +85,7 @@ export const DashboardView = defineComponent({
                         </div>
                     </div>
                 </div>
-                <div class={'w-full h-full'}>
+                <div class={'w-full h-screen'}>
                     <Splitpanes class={"default-theme w-full h-full"} horizontal onResized={(evt) => { resizeChart() }}>
                         {charts.value.map((rowCharts, idx) => <Pane rowId={idx}>
                             <Splitpanes class={'w-full h-full '} onResized={(evt) => { resizeChart() }}>

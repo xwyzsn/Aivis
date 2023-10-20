@@ -1,8 +1,8 @@
 <template>
-    <div class="w-full h-full flex">
-        <div class="w-1/3 h-full bg-slate-300 flex flex-col space-y-4">
+    <div class="w-full h-full flex bg-slate-100">
+        <div class="w-1/4 h-full bg-slate-100 flex flex-col space-y-4">
 
-            <div v-for="(item, idx) in chartConfig">
+            <div class="ml-3" v-for="(item, idx) in chartConfig">
                 <div class="m-2 text-lg">{{ item.label }}</div>
                 <el-select multiple v-if="item.type === 'select'" :placeholder="item.desc" v-model="item.axis">
                     <el-option v-for="item in dataCols" :label="item" :value="item">
@@ -13,14 +13,14 @@
 
             <div class="p-4 space-y-3">
                 <div class="w-full">
-                <el-button class="w-full" type="primary" @click="confirm">确认</el-button>
+                    <el-button class="w-full" type="primary" @click="confirm">确认</el-button>
                 </div>
                 <div class="w-full">
-                <el-button class="w-full" type="default" @click="handleOpenModal">保存</el-button>
+                    <el-button class="w-full" type="default" @click="handleOpenModal">保存</el-button>
                 </div>
             </div>
         </div>
-        <div class="w-2/3 h-full">
+        <div class="w-3/4 border-gray-400 h-full bg-white">
             <dec-chart v-if="showChart" :ctype="chart" :dataset="dataset" :mapping="mapping" />
         </div>
         <el-dialog v-model="saveChartModal" class="w-1/3">
@@ -30,7 +30,7 @@
                 </el-form-item>
             </el-form>
             <template #footer>
-                <div >
+                <div>
                     <el-button type="primary" @click="handleSaveChart">
                         确认
                     </el-button>
@@ -44,11 +44,11 @@
 </template>
  
 <script setup>
-import {ref, watch} from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import { useBootstrapStore } from '@/stores/counter';
 import DecChart from '../../components/charts/DecChart.vue';
-import {saveChart} from "@/api/chart/chartApi";
+import { saveChart } from "@/api/chart/chartApi";
 const bootstrapStore = useBootstrapStore();
 let route = useRoute();
 const { query } = route;
@@ -71,12 +71,12 @@ let confirm = () => {
 
 }
 
-let handleOpenModal = ()=>{
+let handleOpenModal = () => {
     saveChartModal.value = true
 }
-let handleSaveChart = ()=>{
-    let cfg = {"type":chart.value}
-    chartConfig.value.forEach(item=>{
+let handleSaveChart = () => {
+    let cfg = { "type": chart.value }
+    chartConfig.value.forEach(item => {
         let type = item.type
         if (type !== 'select') {
             cfg[item.label] = item.axis
@@ -88,7 +88,7 @@ let handleSaveChart = ()=>{
         dataset: dataset.value,
         mapping: mapping.value
     }
-    saveChart(payload).then(res=>{
+    saveChart(payload).then(res => {
         saveChartModal.value = false
         saveChartName.value = ''
     })

@@ -101,21 +101,21 @@ export const Board = defineComponent({
                 <div class="w-full h-full  ">
                     <div class={'w-full h-10 bg-white flex justify-start gap-10'}>
                         <div>
-                            <el-button onClick={() => { saveDashboard() }}>save</el-button>
+                            <el-button onClick={() => { saveDashboard() }}>保存大屏</el-button>
                         </div>
                         <div>
-                            <el-input v-model={dashboardName.value} placeholder="dashboard name"></el-input>
+                            <el-input v-model={dashboardName.value} placeholder="大屏名称"></el-input>
                         </div>
                     </div>
                     <div class={'w-full h-full flex'}>
-                        <div class="w-5/6 h-full flex bg-slate-50">
+                        <div class="w-5/6 h-screen flex bg-slate-50">
                             <Splitpanes class={"default-theme w-full h-full"} horizontal>
                                 {rowNum.value.map((row, idx) => <Pane rowId={idx}>
                                     <Splitpanes class={'w-full h-full '}>
                                         {row.map((col, col_idx) =>
                                             <Pane >
                                                 <DecChart chart={GenNonDuplicateID()}
-                                                    class="w-full h-full" dataset={chart[col].dataset}
+                                                    class="w-full h-full " dataset={chart[col].dataset}
                                                     mapping={chart[col].mapping}
                                                     ctype={chart[col].config.type}
                                                 >
@@ -123,10 +123,10 @@ export const Board = defineComponent({
                                             </Pane>
 
                                         )}
-                                        <Pane class={'drag-target'}>
-                                            <el-button >
-                                                add more
-                                            </el-button>
+                                        <Pane class={'drag-target   border-dashed border-gray-300 text-center m-auto '}>
+                                            <span class={'text-gray-400'}>
+                                                拖拽到此处,最后一行/列默认不显示
+                                            </span>
                                         </Pane>
 
                                     </Splitpanes>
@@ -135,8 +135,8 @@ export const Board = defineComponent({
                             </Splitpanes>
 
                         </div>
-                        <div class=" w-1/6 h-full overflow-y-scroll flex flex-col gap-5 bg-slate-400">
-                            <el-button onClick={addRow} >add Row</el-button>
+                        <div class=" w-1/6 h-full overflow-y-scroll flex flex-col gap-5 bg-slate-200">
+                            <el-button onClick={addRow} >添加行</el-button>
                             {chart.map((item, idx) => {
                                 return <div class={'w-full h-20 dec-chart'} draggable="true" chartId={idx}>
                                     <DecChart chart={'ch_' + (idx + 8928).toString()}

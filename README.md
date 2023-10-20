@@ -136,16 +136,16 @@ So in order to render the chart,we need format the input data to the format we n
     you can add other property in the table,we will ignore it.
 
     | date | xx_real | xx_predict | [can be other property] |
-    |------|---------|---------|-------------------------|
-    | 1    | 1       | null    |                         |
-    | 2    | null    | 2       |                         |
+    | ---- | ------- | ---------- | ----------------------- |
+    | 1    | 1       | null       |                         |
+    | 2    | null    | 2          |                         |
 2. `TSL`(single input support)
 
     `date` here  indicates the timestamp ,`y` indicates the real value of the timestamp,`y_pred` indicates the predict value of the timestamp.
     this type of chart is only support single input(will be improved in the future)
 
     | date | y   | y_pred |
-    |------|-----|--------|
+    | ---- | --- | ------ |
     | 1    | 1.  | 1.2    |
     | 2    | 1.1 | 1.3    |
 
@@ -157,3 +157,4 @@ That is to say,the model output which write to the database should similar to th
 - [ ] add more model
 - [ ] column mapping in the frontend
 - [ ] build and deploy
+- [ ] replace hardcode secret into  environment variables

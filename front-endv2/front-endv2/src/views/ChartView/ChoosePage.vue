@@ -1,9 +1,9 @@
 <template>
   <div class="w-full h-full">
-    <div class="flex">
+    <div class="flex h-20">
       <el-steps class="w-full" :active="active" align-center>
-        <el-step title="Step 1" description="Choose your database" />
-        <el-step title="Step 2" description="choose your chart" />
+        <el-step title="步骤一" description="选择数据源" />
+        <el-step title="步骤二" description="选择图表" />
       </el-steps>
 
     </div>
@@ -18,7 +18,7 @@
           </el-select>
         </div>
         <div>
-          <el-button class="m-3" type="primary" @click="goNext">Next</el-button>
+          <el-button class="m-3" type="primary" @click="goNext">下一步</el-button>
         </div>
       </div>
       <div v-if="options.filter(item => item.datasetid == value)[0]?.example_row">
@@ -32,18 +32,22 @@
       <my-header content="图表集合"></my-header>
       <div v-if="charts.length > 0" class="grid grid-cols-3 w-full h-full   m-0">
         <div v-for="item in charts" class="w-10/12 h-52 mt-5">
-          <div class="w-full h-full shadow-2xl rounded-2xl flex ">
-            <div class="w-1/3 ml-3">
-              <div class="text-gray-500 " style="margin-top: 50%">
-                {{ item.config.name }}
-              </div>
-              <div class="mt-2">
-                <el-button type="danger" @click="() => { handleDeleteChart(item.chartid) }">delete</el-button>
-              </div>
-            </div>
-            <div class="w-2/3">
+          <div class="w-full h-full shadow-lg">
+            <div class="w-full h-2/3 ">
               <dec-chart class="w-full h-11/12" :chart="GenNonDuplicateID()" :dataset="item.dataset"
                 :mapping="item.mapping" :ctype="item.config.type" :mode="'pic'" />
+            </div>
+            <div class="w-full h-1/3 mt-1">
+              <div class="text-gray-500 text-center ">
+                {{ item.config.name }}
+              </div>
+              <div class="text-center">
+                <el-icon class=" cursor-pointer text-lg text-red-500 mt-2"
+                  @click="() => { handleDeleteChart(item.chartid) }">
+                  <Delete />
+                </el-icon>
+                <!-- <el-button type="danger" ">delete</el-button> -->
+              </div>
             </div>
           </div>
         </div>
@@ -56,7 +60,7 @@
       <my-header content="选择图表"></my-header>
       <div class="flex gap-4">
         <div>
-          <el-button @click="active = 1">go back</el-button>
+          <el-button @click="active = 1">上一步</el-button>
         </div>
         <div>
           <el-button type="primary" @click="confirm">确认</el-button>

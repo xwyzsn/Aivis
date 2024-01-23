@@ -2,7 +2,7 @@ from fastapi import APIRouter,Depends
 from pydantic import BaseModel
 
 from typing import Union,Dict
-from curd.service.dataset_service import SessionLocal,save_dataset,Session,get_all_dataset
+from ..curd.service.dataset_service import SessionLocal,save_dataset,Session,get_all_dataset
 
 router = APIRouter(prefix="/dataset", tags=["dataset"])
 # class DataSetConfig:

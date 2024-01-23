@@ -1,0 +1,7 @@
+app:
+  database_url: 113.31.110.212
+  user: zzh
+  password: zzh0117.
+  port: 3306
+  database: al
+

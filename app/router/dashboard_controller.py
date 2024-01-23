@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 from typing import List
 from sqlalchemy.orm import Session
-from curd.sqlconfig import SessionLocal
-from curd import schemas, model
-from curd.service.dashboard_service import get_all_dashboard, save_dashboard, delete_dashboard
+from ..curd.sqlconfig import SessionLocal
+from ..curd import schemas, model
+from ..curd.service.dashboard_service import get_all_dashboard, save_dashboard, delete_dashboard
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 

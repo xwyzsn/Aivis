@@ -1,5 +1,5 @@
-from curd.sqlconfig import SessionLocal, engine
-from curd.model import Chart
+from ..sqlconfig import SessionLocal, engine
+from ..model import Chart
 
 
 def get_all_charts():

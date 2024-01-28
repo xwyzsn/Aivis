@@ -1,18 +1,18 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : PSQL
+ Source Server         : 127.0.0.1
  Source Server Type    : PostgreSQL
- Source Server Version : 120017 (120017)
- Source Host           : 113.31.110.212:5432
+ Source Server Version : 160001 (160001)
+ Source Host           : localhost:5433
  Source Catalog        : al
  Source Schema         : public
 
  Target Server Type    : PostgreSQL
- Target Server Version : 120017 (120017)
+ Target Server Version : 160001 (160001)
  File Encoding         : 65001
 
- Date: 22/01/2024 20:59:48
+ Date: 28/01/2024 23:54:14
 */
 
 
@@ -115,24 +115,6 @@ INSERT INTO "public"."model" VALUES (1, 'triformer', '{
     }
 }
 ');
-INSERT INTO "public"."model" VALUES (4, 'PatchTST', NULL);
-INSERT INTO "public"."model" VALUES (5, 'merlion_isolationforest', NULL);
-INSERT INTO "public"."model" VALUES (6, 'AnomalyTransformer', NULL);
-INSERT INTO "public"."model" VALUES (7, 'tods_lofski', NULL);
-INSERT INTO "public"."model" VALUES (8, 'DCdetector', NULL);
-INSERT INTO "public"."model" VALUES (9, 'FEDformer', NULL);
-INSERT INTO "public"."model" VALUES (10, 'FiLM', NULL);
-INSERT INTO "public"."model" VALUES (11, 'Informer', NULL);
-INSERT INTO "public"."model" VALUES (12, 'Linear', NULL);
-INSERT INTO "public"."model" VALUES (13, 'merlion_autoencoder', NULL);
-INSERT INTO "public"."model" VALUES (14, 'merlion_deeppointanomalydetector', NULL);
-INSERT INTO "public"."model" VALUES (15, 'merlion_lstmed', NULL);
-INSERT INTO "public"."model" VALUES (16, 'merlion_vae', NULL);
-INSERT INTO "public"."model" VALUES (17, 'NLinear', NULL);
-INSERT INTO "public"."model" VALUES (18, 'Nonstationary_Transformer', NULL);
-INSERT INTO "public"."model" VALUES (19, 'TimesNet', NULL);
-INSERT INTO "public"."model" VALUES (20, 'MIDD', NULL);
-INSERT INTO "public"."model" VALUES (21, 'tods_ocsvmski', NULL);
 
 -- ----------------------------
 -- Primary Key structure for table model

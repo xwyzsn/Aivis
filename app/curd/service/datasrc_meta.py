@@ -7,8 +7,9 @@ from ..schemas import DataSourceConfig
 from sqlalchemy.sql import text
 from ..model import DataSource
 
+from ..sqlconfig import SQLALCHEMY_DATABASE_URL
 
-SQLALCHEMY_DATABASE_URL = "postgresql://zzh:zzh0117.@113.31.110.212/al"
+# SQLALCHEMY_DATABASE_URL = "postgresql://zzh:zzh0117.@113.31.110.212/al"
 PSQL = "postgresql://{user}:{password}@{host}:{port}/{database}"
 SQLALCHEMY_DATABASE_URL_MYSQL = "mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
 MYSQL = "mysql://{user}:{password}@{host}:{port}/{database}"

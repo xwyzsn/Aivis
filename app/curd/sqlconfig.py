@@ -6,7 +6,7 @@ print(global_object.config)
 SQLALCHEMY_DATABASE_URL = (f"postgresql://{global_object.config['app']['user']}:"
                            f"{global_object.config['app']['password']}"
                            f"@"
-                           f"{global_object.config['app']['database_url']}"
+                           f"{global_object.config['app']['database_url']}:{global_object.config['app']['port']}"
                            f"/"
                            f"{global_object.config['app']['database']}")
 

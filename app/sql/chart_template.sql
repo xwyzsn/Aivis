@@ -1,18 +1,18 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : PSQL
+ Source Server         : 127.0.0.1
  Source Server Type    : PostgreSQL
- Source Server Version : 120017 (120017)
- Source Host           : 113.31.110.212:5432
+ Source Server Version : 160001 (160001)
+ Source Host           : localhost:5433
  Source Catalog        : al
  Source Schema         : public
 
  Target Server Type    : PostgreSQL
- Target Server Version : 120017 (120017)
+ Target Server Version : 160001 (160001)
  File Encoding         : 65001
 
- Date: 22/01/2024 20:59:23
+ Date: 28/01/2024 23:53:38
 */
 
 

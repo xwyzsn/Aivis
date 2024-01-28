@@ -1,7 +1,7 @@
 app:
-  database_url: 113.31.110.212
-  user: zzh
+  database_url: 127.0.0.1
+  user: postgres
   password: zzh0117.
-  port: 3306
+  port: 5433
   database: al
 
